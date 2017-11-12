@@ -5,4 +5,9 @@
 test-ball
 config
 /html
-/latex%   
+/latex%
+CMakeFiles/
+Makefile
+cmake_install.cmake
+control-system
+*.gch

@@ -3,19 +3,9 @@
 
 Student::Student(){};
 
-Student::Student(string cpf,string registry,vector<string>disciplines){
-  setCpf(cpf);
+Student::Student(string registry,vector<string>disciplines){
   setRegistry(registry);
   setDisciplines(disciplines);
-}
-
-
-string Student::getCpf() {
-  return cpf;
-}
-
-void Student::setCpf(string cpf) {
-  this->cpf = cpf;
 }
 
 string Student::getRegistry() {

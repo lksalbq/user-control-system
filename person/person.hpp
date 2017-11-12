@@ -9,14 +9,20 @@ class Person{
 protected:
   string firstName;
   string lastName;
+  string cpf;
   vector<string> facePicturesPath;
 public:
   Person();
   Person(string name, string lastName, vector<string> facePictures);
   string getFirstName();
   void setFirstName(string firstName);
+  
   string getLastName();
   void setLastName(string lastName);
+
+  void setCpf(string cpf);
+  string getCpf();
+  
   vector<string> getFacePicturesPath();
   void setFacePicturesPath(vector<string> facePicturesPath);
 

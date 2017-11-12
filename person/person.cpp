@@ -7,6 +7,7 @@ Person::Person(){};
 Person::Person(string firstName, string lastName, vector<string> facePicturesPath){
   setFirstName(firstName);
   setLastName(lastName);
+  setCpf(cpf);
   setFacePicturesPath(facePicturesPath);
 }
 
@@ -24,7 +25,13 @@ string Person::getLastName() {
 void Person::setLastName(string lastNome) {
   this->lastName = lastName;
 }
+string Person::getCpf() {
+  return cpf;
+}
 
+void Person::setCpf(string cpf) {
+  this->cpf = cpf;
+}
 vector<string> Person::getFacePicturesPath() {
   return facePicturesPath;
 }
