@@ -22,3 +22,8 @@ vector<string> Student::getDisciplines() {
 void Student::setDisciplines(vector<string> disciplines) {
   this->disciplines = disciplines;
 }
+
+// void Student::saveStudent(){
+// 	db.executeSimpleQuery("INSER INTO student values("+)
+
+// }

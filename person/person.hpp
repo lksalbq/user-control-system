@@ -3,17 +3,20 @@
 
 #include <string>
 #include <vector>
+#include "../config/database.hpp"
+
 using namespace std;
 
-class Person{
+class Person: public Database{
 protected:
   string firstName;
   string lastName;
   string cpf;
-  vector<string> facePicturesPath;
+  string facePicturesPath;
+
 public:
   Person();
-  Person(string name, string lastName, vector<string> facePictures);
+  Person(string name, string lastName,string facePicturesPath);
   string getFirstName();
   void setFirstName(string firstName);
   
@@ -23,12 +26,12 @@ public:
   void setCpf(string cpf);
   string getCpf();
   
-  vector<string> getFacePicturesPath();
-  void setFacePicturesPath(vector<string> facePicturesPath);
+  string getFacePicturesPath();
+  void setFacePicturesPath(string facePicturesPath);
 
   void addPerson(Person p);
   Person getPerson();
+
+  void savePerson();
 };
-
-
 #endif
