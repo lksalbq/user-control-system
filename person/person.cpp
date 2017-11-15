@@ -13,7 +13,7 @@ Person::Person(string firstName, string lastName,string facePicturesPath){
 }
 
 string Person::getFirstName() {
-  return lastName;
+  return firstName;
 }
 
 void Person::setFirstName(string firstName) {
