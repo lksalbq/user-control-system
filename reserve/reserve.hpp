@@ -1,41 +1,43 @@
-#ifndef _DISCIPLNE_HPP
-#define _DISCIPLINE_HPP
+#ifndef _RESERVE_HPP
+#define _RESERVE_HPP
 
 #include <string>
 #include <vector>
-#include "../config/database.hpp"
-#include "../discipline/discipline.hpp"
 #include "../room/room.hpp"
+#include "../person/person.hpp"
+#include "config/json.hpp"
+
+using nlohmann::json;
 
 using namespace std;
 
-class Reserve: public Database{
+class Reserve{
 protected:
   int id;
-  string author;
+  Person author;
   string purpose;
-  Discipline discipline;
-  Room room;
+  string roomNumber;
   time_t initSchedule;
   time_t endSchedule;
+  bool recurrent;
   vector<Person> persons;
 public:
-  Discipline();
-  Discipline(string author, string purpose,Discipline discipline,Room room, time_t initSchedule, time_t endSchedule,  vector<Person> persons);
-  
-  int getId();
+  Reserve();
+  Reserve(int id,Person author, string purpose,string roomNumber, 
+  time_t initSchedule, time_t endSchedule,bool recurrent,vector<Person> persons);
+  Reserve(json j);
 
-  string getAuthor();
-  void setAuthor(string author);
+  int getId();
+  void setId(int id);
+
+  Person getAuthor();
+  void setAuthor(Person author);
   
   string getPurpose();
   void setPurpose(string purpose);
 
-  Discipline getDiscipline();
-  void setDiscipline(Discipline discipline);
-
-  Discipline getRoom();
-  void setRoom(Room room);
+  string getRoom();
+  void setRoom(string roomNumber);
 
   void setInitSchedule(time_t initSchedule);
   time_t getInitSchedule();
@@ -43,12 +45,15 @@ public:
   void setEndSchedule(time_t endSchedule);
   time_t getEndSchedule();
 
-  void setStudents(vector<Student> students);
-  string getStudents();
+  void setRecurrent(bool recurrent);
+  bool getRecurrent();
 
-  void setProfessor(Professor professor);
-  Professor getProfessor();
-  
-  void saveDiscipline();
+  void setPersons(vector<Person> persons);
+  json getPersons();
+
+  json to_json();
+
+  string getPathName();
+  int getNextId();
 };
 #endif

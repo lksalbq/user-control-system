@@ -11,9 +11,10 @@ using nlohmann::json;
 using namespace std;
 
 namespace util{
-   void saveJson(string pathName, json j);
+   void saveJson(string pathName,string fileName, json j);
    json readJson(string path);
    string getexepath();
    void createDirectory(string path);
    void sanitize(std::string &stringValue);
+   void removeJsonFormat(std::string &stringValue);
 }

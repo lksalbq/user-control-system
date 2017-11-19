@@ -14,8 +14,8 @@ Student::Student(json j) {
 	this->lastName = j.at("person").at("lastName").get<std::string>();
 	this->cpf = j.at("person").at("cpf").get<std::string>();
 	this->facePicturesPath = j.at("person").at("facePicturesPath").get<std::string>();
-    this->registry = j.at("registry").get<std::string>();
-    this->disciplines = j.at("disciplines").get<std::vector<string>>();
+  this->registry = j.at("registry").get<std::string>();
+  this->disciplines = j.at("disciplines").get<std::vector<string>>();
 }
 
 string Student::getRegistry() {

@@ -15,12 +15,7 @@ Employee::Employee(json j) {
 	this->functionalRegistry = j.at("functionalRegistry").get<std::string>();
 	
 	//creating employeeType
-	EmployeeType employeeType;
-	
-	employeeType.setType(j.at("employee-type").at("type").get<std::string>());
-	employeeType.setCompany(j.at("employee-type").at("company").get<std::string>());
-	employeeType.setInternal(j.at("employee-type").at("internal"));
-
+	EmployeeType employeeType(j);
 	this->employeeType = employeeType;
 }
 

@@ -7,18 +7,28 @@
 
 Discipline::Discipline(){};
   
-Discipline::Discipline(string name, string description,string department, time_t initSchedule, time_t endSchedule,  vector<Student> students, Professor professor){
+Discipline::Discipline(string code,string name, string description,string department, string disciplineClass){
+	setCode(code);
 	setName(name);
 	setDescription(description);
 	setDepartment(department);
-	setInitSchedule(initSchedule);
-	setEndSchedule(endSchedule);
-	setStudents(students);
-	setProfessor(professor);
+	setDisciplineClass(disciplineClass);	
 }
-  
-int Discipline::getId(){
-	return this->id;
+
+Discipline::Discipline(json j){
+	this->code = j.at("code").get<std::string>();
+	this->name = j.at("name").get<std::string>();
+	this->description = j.at("description").get<std::string>();
+	this->department = j.at("department").get<std::string>();
+	this->disciplineClass = j.at("disciplineClass").get<std::string>();
+}
+
+
+void Discipline::setCode(string code){
+	this->code = code;
+}  
+string Discipline::getCode(){
+	return this->code;
 }
 
 string Discipline::getName(){
@@ -45,38 +55,17 @@ void Discipline::setDepartment(string department){
 	this->department = department;
 }
 
-void Discipline::setInitSchedule(time_t initSchedule){
-	this->initSchedule = initSchedule;	
+void Discipline::setDisciplineClass(string disciplineClass){
+	this->disciplineClass = disciplineClass;	
 }
 
-time_t Discipline::getInitSchedule(){
-	return this->initSchedule;
-}
-  
-void Discipline::setEndSchedule(time_t endSchedule){
-	this->endSchedule = endSchedule;
+
+string Discipline::getDisciplineClass(){
+	return this->disciplineClass;	
 }
 
-time_t Discipline::getEndSchedule(){
-	return this->endSchedule;
+json Discipline::to_json(){
+	json j;
+	j = json{{"code", this->getCode()}, {"name", this->getName()},{"description", this->getDepartment()},{"department", this->getDepartment()},{"disciplineClass", this->getDisciplineClass()}};
+	return j;
 }
-
-void Discipline::setStudents(vector<Student> students){
-	this->students = students;
-}
-string Discipline::getStudents(){
-	string student;
-	for(int i = 0; i < this->students.size();i++){
-		student.append(students[i].getRegistry()+",");
-	}
-	return student;
-} 
-
-void Discipline::setProfessor(Professor professor){
-	this->professor = professor;
-}
-Professor Discipline::getProfessor(){
-	return this->professor;
-}
-
-void saveDiscipline(){}

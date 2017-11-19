@@ -1,19 +1,20 @@
 
 #include "util.hpp"
+
 //save json to a specific path
-void util::saveJson(string fileName, json j){
-	util::sanitize(fileName);
-	util::createDirectory(util::getexepath()+"/json_db");
-	string rootPath = util::getexepath()+"/json_db/"+fileName+".json";
+void util::saveJson(string identifierPath,string fileName,json j){
+    util::sanitize(fileName);
+	util::createDirectory(util::getexepath()+"/json_db/"+identifierPath);
+	string rootPath = util::getexepath()+"/json_db/"+identifierPath+"/"+fileName+".json";
 	std::ofstream o(rootPath);
 	o << std::setw(4) << j << std::endl;
 
 	std::cout<< "Json saved on dir>>"+rootPath<<std::endl;
 }	
 
-json util::readJson(string path){
+json util::readJson(string identifierPath){
 	// read a JSON file
-	std::ifstream i(path);
+	std::ifstream i(identifierPath);
 	json j;
 	i >> j;
 	return j;
@@ -53,9 +54,13 @@ void util::sanitize(std::string &stringValue){
     stringValue.erase(
         std::remove_if(
             stringValue.begin(), stringValue.end(), [](char const c) {
-                return '\n' == c || '\r' == c || '\0' == c || '\x1A' == c;
+                return '\n' == c || '\r' == c || '\0' == c || '\x1A' == c || '-' == c || '.' == c || '/' == c || '/' == c;
             }
         ),
         stringValue.end()
     );
+}
+
+void util::removeJsonFormat(std::string &stringValue){
+    stringValue.erase(stringValue.size()-5,5);
 }

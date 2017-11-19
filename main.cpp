@@ -1,6 +1,7 @@
 #include "users/student.hpp"
 #include "users/professor.hpp"
 #include "discipline/discipline.hpp"
+#include "room/room.hpp"
 #include <string>
 #include <vector>
 #include <iostream>
@@ -8,23 +9,21 @@
 
 #include "config/json.hpp"
 #include "util/util.hpp"
+using namespace util;
 // for convenience
 using json = nlohmann::json;
 using namespace std;
-using namespace util;
 
 int main(int argc, char **argv){
 
-	Discipline discipline;
+	time_t t = time(0);   // get time now
+    struct tm * now = localtime( & t );
 
-	discipline.setName("Tecnicas de Programcao 1");
-	discipline.setDescription("Descricao");
-	discipline.setDepartment("CIC");
+    cout << (now->tm_year + 1900) << '-' 
+         << (now->tm_mon + 1) << '-'
+         <<  now->tm_mday
+         << endl;
 
- 	vector<string> disciplinesS;
- 	
- 	disciplinesS.push_back(discipline.getName());
-	
 	Student student;
 
 	student.setRegistry("17/0149439");
@@ -41,30 +40,31 @@ int main(int argc, char **argv){
 	student2.setCpf("039.040.531-08");
 	student2.setFacePicturesPath("/home/lucas1/"+student.getRegistry());
 
-	vector<Student> students;
-
-	students.push_back(student);
-	students.push_back(student2);
-
-	discipline.setStudents(students);
-
 	Professor professor;
 
 	professor.setFunctionalRegistry("1111112222");
 	professor.setFirstName("Teofilo");
 
-	discipline.setProfessor(professor);
+	vector<Person> persons;
 
-	professor.setDisciplines(disciplinesS);
-	student.setDisciplines(disciplinesS);
+	persons.push_back(student);
+	persons.push_back(student);
 
-	json j = util::readJson("pretty.json");
-	Student s(j);
+	Reserve r(0,professor,"Aula X" ,"23-A",t, t, true,persons);
+	r.setId(r.getNextId());
 
-	cout<< s.getFirstName() << endl;
-	cout<< s.getFacePicturesPath() << endl;
+	vector<Reserve> resrevations;
+	resrevations.push_back(r);
 
-	util::saveJson(s.getCpf(),s.to_json());
+	Room room;
+	room.setRoomNumber("23-A-b..5");
+	room.setReservations(resrevations);
+
+	cout<<r.getId()<<endl;
+
+	//util::saveJson(room.getPathName(),room.getRoomNumber(),room.to_json());
+	util::saveJson(r.getPathName(),std::to_string(r.getId()),r.to_json());
+
 
   return 0;
 }

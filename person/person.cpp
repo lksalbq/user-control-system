@@ -12,6 +12,13 @@ Person::Person(string firstName, string lastName,string facePicturesPath){
   setFacePicturesPath(facePicturesPath);
 }
 
+Person::Person(json j){
+  this->firstName = j.at("person").at("firstName").get<std::string>();
+  this->lastName = j.at("person").at("lastName").get<std::string>();
+  this->cpf = j.at("person").at("cpf").get<std::string>();
+  this->facePicturesPath = j.at("person").at("facePicturesPath").get<std::string>();
+}
+
 string Person::getFirstName() {
   return firstName;
 }

@@ -9,6 +9,12 @@ EmployeeType::EmployeeType(string type,string company, bool internal){
   setInternal(internal);
 }
 
+EmployeeType::EmployeeType(json j){
+  this->type = j.at("employee-type").at("type").get<std::string>();
+  this->company = j.at("employee-type").at("company").get<std::string>();
+  this->internal = j.at("employee-type").at("internal");   
+}
+
 string EmployeeType::getType() {
   return type;
 }

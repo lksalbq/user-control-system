@@ -3,7 +3,6 @@
 
 #include <string>
 #include <vector>
-#include "../config/database.hpp"
 #include "config/json.hpp"
 
 using nlohmann::json;
@@ -19,6 +18,8 @@ protected:
 public:
   Person();
   Person(string name, string lastName,string facePicturesPath);
+  Person(json j);
+  
   string getFirstName();
   void setFirstName(string firstName);
   

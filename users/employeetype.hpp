@@ -15,13 +15,15 @@ private:
 public:
 	EmployeeType();
 	EmployeeType(string type,string company, bool internal);
+	EmployeeType(json j);
 
 	void setType(string type);
-	void setCompany(string company);
-	void setInternal(bool internal);
-
 	string getType();
+	
+	void setCompany(string company);
 	string getCompany();
+	
+	void setInternal(bool internal);
 	bool getInternal();
 
 	json to_json();

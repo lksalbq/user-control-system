@@ -2,28 +2,26 @@
 #define _DISCIPLINE_HPP
 
 #include <string>
-#include <vector>
-#include "../config/database.hpp"
-#include "../users/student.hpp"
-#include "../users/professor.hpp"
-
 using namespace std;
+#include "config/json.hpp"
 
-class Discipline: public Database{
+using nlohmann::json;
+
+class Discipline{
 protected:
-  int id;
+  string code;
   string name;
   string description;
   string department;
-  time_t initSchedule;
-  time_t endSchedule;
-  vector<Student> students;
-  Professor professor;
+  string disciplineClass;
+
 public:
   Discipline();
-  Discipline(string name, string description,string department, time_t initSchedule, time_t endSchedule,  vector<Student> students, Professor professor);
-  
-  int getId();
+  Discipline(string code,string name, string description,string department, string disciplineClass);
+  Discipline(json j);  
+
+  string getCode();
+  void setCode(string code);
 
   string getName();
   void setName(string name);
@@ -34,18 +32,11 @@ public:
   string getDepartment();
   void setDepartment(string department);
 
-  void setInitSchedule(time_t initSchedule);
-  time_t getInitSchedule();
-  
-  void setEndSchedule(time_t endSchedule);
-  time_t getEndSchedule();
+  string getDisciplineClass();
+  void setDisciplineClass(string disciplineClass);
 
-  void setStudents(vector<Student> students);
-  string getStudents();
 
-  void setProfessor(Professor professor);
-  Professor getProfessor();
-  
-  void saveDiscipline();
+  json to_json();
+
 };
 #endif
