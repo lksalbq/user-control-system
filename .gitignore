@@ -11,3 +11,5 @@ Makefile
 cmake_install.cmake
 control-system
 *.gch
+json_db/
+*.json

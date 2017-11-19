@@ -32,3 +32,8 @@ void EmployeeType::setInternal(bool internal) {
   this->internal = internal;
 }
 
+json EmployeeType::to_json(){
+	json j;
+	j = json{{"type", this->getType()},{"company", this->getCompany()},{"internal",this->getInternal()}};
+	return j;
+}

@@ -3,9 +3,25 @@
 
 Employee::Employee(){};
 
-Employee::Employee(string functionalRegistry,EmployeeType type){
+Employee::Employee(string functionalRegistry,EmployeeType employeeType){
   setFunctionalRegistry(functionalRegistry);
-  setEmployeeType(type);
+  setEmployeeType(employeeType);
+}
+Employee::Employee(json j) {
+	this->firstName = j.at("person").at("firstName").get<std::string>();
+	this->lastName = j.at("person").at("lastName").get<std::string>();
+	this->cpf = j.at("person").at("cpf").get<std::string>();
+	this->facePicturesPath = j.at("person").at("facePicturesPath").get<std::string>();
+	this->functionalRegistry = j.at("functionalRegistry").get<std::string>();
+	
+	//creating employeeType
+	EmployeeType employeeType;
+	
+	employeeType.setType(j.at("employee-type").at("type").get<std::string>());
+	employeeType.setCompany(j.at("employee-type").at("company").get<std::string>());
+	employeeType.setInternal(j.at("employee-type").at("internal"));
+
+	this->employeeType = employeeType;
 }
 
 string Employee::getFunctionalRegistry() {
@@ -16,9 +32,15 @@ void Employee::setFunctionalRegistry(string functionalRegistry) {
 }
 
 EmployeeType Employee::getEmployeeType() {
-  return type;
+  return employeeType;
 }
 
-void Employee::setEmployeeType(EmployeeType type) {
-  this->type = type;
+void Employee::setEmployeeType(EmployeeType employeeType) {
+  this->employeeType = employeeType;
+}
+
+json Employee::to_json() {
+  json j;
+  j = json{{"person", this->person_to_json()},{"functionalRegistry", this->getFunctionalRegistry()},{"employee-type",this->getEmployeeType().to_json()}};
+  return j;
 }

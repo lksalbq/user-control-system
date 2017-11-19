@@ -4,10 +4,12 @@
 #include <string>
 #include <vector>
 #include "../config/database.hpp"
+#include "config/json.hpp"
 
+using nlohmann::json;
 using namespace std;
 
-class Person: public Database{
+class Person{
 protected:
   string firstName;
   string lastName;
@@ -32,6 +34,7 @@ public:
   void addPerson(Person p);
   Person getPerson();
 
+  json person_to_json();
   void savePerson();
 };
 #endif

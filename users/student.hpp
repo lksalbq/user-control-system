@@ -3,8 +3,9 @@
 
 #include<string>
 #include "../person/person.hpp"
-#include "../config/database.hpp"
+#include "config/json.hpp"
 
+using nlohmann::json;
 using namespace std;
 
 class Student: public Person{
@@ -12,17 +13,19 @@ class Student: public Person{
 private:
 	string registry;
 	vector<string> disciplines;
-	Database db;
+
 public:
 	Student();
 	Student(string registry,vector<string>disciplines);
-	
+	Student(json j);
+
 	void setRegistry(string registry);
 	void setDisciplines(vector<string> disciplines);
 	
 	string getRegistry();
 	vector<string> getDisciplines();
 
+	json to_json();
 	void saveStudent();
 };
 #endif 

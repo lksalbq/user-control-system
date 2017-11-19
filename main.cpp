@@ -1,45 +1,70 @@
 #include "users/student.hpp"
-#include "config/database.hpp"
+#include "users/professor.hpp"
+#include "discipline/discipline.hpp"
 #include <string>
 #include <vector>
 #include <iostream>
 #include <fstream>
 
+#include "config/json.hpp"
+#include "util/util.hpp"
+// for convenience
+using json = nlohmann::json;
 using namespace std;
+using namespace util;
 
 int main(int argc, char **argv){
 
- 	vector<string> disciplines;
+	Discipline discipline;
+
+	discipline.setName("Tecnicas de Programcao 1");
+	discipline.setDescription("Descricao");
+	discipline.setDepartment("CIC");
+
+ 	vector<string> disciplinesS;
  	
- 	disciplines.push_back("Topicos 1");
+ 	disciplinesS.push_back(discipline.getName());
 	
 	Student student;
 
 	student.setRegistry("17/0149439");
-	student.setDisciplines(disciplines);
 	student.setFirstName("Lucas");
 	student.setLastName("de Albuquerque Silva");
 	student.setCpf("039.040.531-08");
 	student.setFacePicturesPath("/home/lucas/"+student.getRegistry());
 
-	student.savePerson();
-	student.closeConnection();	
-	vector<string> result;
+	Student student2;
 
-	try{
-		result = student.executeQuery("Select * from person;");
-  	}catch (sql::SQLException &e) {
-  		cout << "# ERR: SQLException in " << __FILE__;
-  		cout << __LINE__ << endl;
-  		cout << "# ERR: " << e.what();
-  		cout << " (MySQL error code: " << e.getErrorCode();
-  		cout << ", SQLState: " << e.getSQLState() << " )" << endl;
-  	}
+	student2.setRegistry("11/0128796");
+	student2.setFirstName("Lucas OLd");
+	student2.setLastName("Silva");
+	student2.setCpf("039.040.531-08");
+	student2.setFacePicturesPath("/home/lucas1/"+student.getRegistry());
 
+	vector<Student> students;
 
-	for(int i=0; i < result.size(); i++){
-		cout<< result[i] << endl;		
-	}
+	students.push_back(student);
+	students.push_back(student2);
+
+	discipline.setStudents(students);
+
+	Professor professor;
+
+	professor.setFunctionalRegistry("1111112222");
+	professor.setFirstName("Teofilo");
+
+	discipline.setProfessor(professor);
+
+	professor.setDisciplines(disciplinesS);
+	student.setDisciplines(disciplinesS);
+
+	json j = util::readJson("pretty.json");
+	Student s(j);
+
+	cout<< s.getFirstName() << endl;
+	cout<< s.getFacePicturesPath() << endl;
+
+	util::saveJson(s.getCpf(),s.to_json());
 
   return 0;
 }

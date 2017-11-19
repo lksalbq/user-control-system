@@ -3,8 +3,9 @@
 
 #include<string>
 #include "../person/person.hpp"
-using namespace std;
+#include "config/json.hpp"
 
+using nlohmann::json;
 class EmployeeType{
 
 private:
@@ -22,5 +23,7 @@ public:
 	string getType();
 	string getCompany();
 	bool getInternal();
+
+	json to_json();
 };
 #endif 

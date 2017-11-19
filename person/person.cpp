@@ -42,6 +42,8 @@ void Person::setFacePicturesPath(string facePicturesPath) {
   this->facePicturesPath = facePicturesPath;
 }
 
-void Person::savePerson(){
-  executeSimpleQuery("INSERT INTO person values(null,'"+this->firstName+"','"+this->lastName+"','"+this->cpf+"','"+this->facePicturesPath+"');");
+json Person::person_to_json() {
+  json j;
+  j = json{{"firstName", this->getFirstName()}, {"lastName", this->getLastName()},{"cpf", this->getCpf()},{"facePicturesPath", this->getFacePicturesPath()}};
+  return j;
 }
