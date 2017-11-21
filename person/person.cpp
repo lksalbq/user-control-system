@@ -1,7 +1,6 @@
 #include "person.hpp"
 #include<string>
 #include <vector>
-#include "../config/database.hpp"
 
 Person::Person(){};
 

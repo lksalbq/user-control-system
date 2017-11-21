@@ -2,6 +2,7 @@
 #include "users/professor.hpp"
 #include "discipline/discipline.hpp"
 #include "room/room.hpp"
+#include "cam-interface/camInterface.hpp"
 #include <string>
 #include <vector>
 #include <iostream>
@@ -13,6 +14,7 @@ using namespace util;
 // for convenience
 using json = nlohmann::json;
 using namespace std;
+
 
 int main(int argc, char **argv){
 
@@ -30,41 +32,28 @@ int main(int argc, char **argv){
 	student.setFirstName("Lucas");
 	student.setLastName("de Albuquerque Silva");
 	student.setCpf("039.040.531-08");
-	student.setFacePicturesPath("/home/lucas/"+student.getRegistry());
 
-	Student student2;
+	//set face picture path
+	string facePath = util::createFacePicturesPath(student.getPathName(),student.getRegistry());
+	student.setFacePicturesPath(facePath);
 
-	student2.setRegistry("11/0128796");
-	student2.setFirstName("Lucas OLd");
-	student2.setLastName("Silva");
-	student2.setCpf("039.040.531-08");
-	student2.setFacePicturesPath("/home/lucas1/"+student.getRegistry());
+	util::createDirectory(student.getPathName());
+	util::saveJson(student.getPathName(),student.getRegistry(),student.to_json());
 
-	Professor professor;
+	Student s;
 
-	professor.setFunctionalRegistry("1111112222");
-	professor.setFirstName("Teofilo");
+	string registry = "17/0149439";
+	json j = util::readJson(util::getJsonFullPath(s.getPathName(),registry));
 
-	vector<Person> persons;
+	Student st(j);
 
-	persons.push_back(student);
-	persons.push_back(student);
+	cout << st.getFacePicturesPath() <<endl;
 
-	Reserve r(0,professor,"Aula X" ,"23-A",t, t, true,persons);
-	r.setId(r.getNextId());
+	CamInterface cam;
+	cam.setFilePath(st.getFacePicturesPath());
+	cam.setWindowName("MOSOQ");
 
-	vector<Reserve> resrevations;
-	resrevations.push_back(r);
-
-	Room room;
-	room.setRoomNumber("23-A-b..5");
-	room.setReservations(resrevations);
-
-	cout<<r.getId()<<endl;
-
-	//util::saveJson(room.getPathName(),room.getRoomNumber(),room.to_json());
-	util::saveJson(r.getPathName(),std::to_string(r.getId()),r.to_json());
-
-
+	cam.openVideoCapture();
+	
   return 0;
 }

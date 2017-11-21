@@ -38,3 +38,7 @@ json Student::to_json() {
     j = json{{"person", this->person_to_json()},{"registry", this->getRegistry()}, {"disciplines", this->getDisciplines()}};
     return j;
 }
+
+string Student::getPathName(){
+  return "students";
+}

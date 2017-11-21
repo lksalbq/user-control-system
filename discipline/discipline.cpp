@@ -1,7 +1,6 @@
 #include "discipline.hpp"
 #include<string>
 #include <vector>
-#include "../config/database.hpp"
 #include "../users/student.hpp"
 #include "../users/professor.hpp"
 

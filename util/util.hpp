@@ -17,4 +17,7 @@ namespace util{
    void createDirectory(string path);
    void sanitize(std::string &stringValue);
    void removeJsonFormat(std::string &stringValue);
+   string createFacePicturesPath(string identifier, string pathName);
+   string getJsonFullPath(string pathName,string fileId);
+
 }

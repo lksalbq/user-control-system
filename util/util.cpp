@@ -3,10 +3,13 @@
 
 //save json to a specific path
 void util::saveJson(string identifierPath,string fileName,json j){
+    
     util::sanitize(fileName);
+    util::createDirectory(util::getexepath()+"/json_db");
 	util::createDirectory(util::getexepath()+"/json_db/"+identifierPath);
 	string rootPath = util::getexepath()+"/json_db/"+identifierPath+"/"+fileName+".json";
-	std::ofstream o(rootPath);
+	
+    std::ofstream o(rootPath);
 	o << std::setw(4) << j << std::endl;
 
 	std::cout<< "Json saved on dir>>"+rootPath<<std::endl;
@@ -63,4 +66,16 @@ void util::sanitize(std::string &stringValue){
 
 void util::removeJsonFormat(std::string &stringValue){
     stringValue.erase(stringValue.size()-5,5);
+}
+
+string util::createFacePicturesPath(string identifier, string pathName){
+    util::sanitize(pathName);
+    util::createDirectory(util::getexepath()+"/json_db/"+identifier+"/faces-path");
+    util::createDirectory(util::getexepath()+"/json_db/"+identifier+"/faces-path/"+pathName);
+    return util::getexepath()+"/json_db/"+identifier+"/faces-path/"+pathName;
+}
+
+string util::getJsonFullPath(string pathName,string fileId){
+    util::sanitize(fileId);
+    return util::getexepath()+"/json_db/"+pathName+"/"+fileId+".json";
 }

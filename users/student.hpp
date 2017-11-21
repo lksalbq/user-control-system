@@ -26,6 +26,6 @@ public:
 	vector<string> getDisciplines();
 
 	json to_json();
-	void saveStudent();
+	string getPathName();
 };
 #endif 
