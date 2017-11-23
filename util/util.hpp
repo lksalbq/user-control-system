@@ -19,5 +19,5 @@ namespace util{
    void removeJsonFormat(std::string &stringValue);
    string createFacePicturesPath(string identifier, string pathName);
    string getJsonFullPath(string pathName,string fileId);
-
+   void removePngFormat(std::string &stringValue);
 }

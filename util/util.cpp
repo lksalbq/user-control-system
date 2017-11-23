@@ -68,6 +68,10 @@ void util::removeJsonFormat(std::string &stringValue){
     stringValue.erase(stringValue.size()-5,5);
 }
 
+void util::removePngFormat(std::string &stringValue){
+    stringValue.erase(stringValue.size()-4,4);
+}
+
 string util::createFacePicturesPath(string identifier, string pathName){
     util::sanitize(pathName);
     util::createDirectory(util::getexepath()+"/json_db/"+identifier+"/faces-path");

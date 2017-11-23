@@ -24,7 +24,7 @@ public:
     CamInterface();
 
     void setWindowName(string windowName);
-    int getLastFile();
+    int getNextFile();
     void setFilePath(string filePath);
     string getFilePath();
 

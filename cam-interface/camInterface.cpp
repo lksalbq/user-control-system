@@ -1,12 +1,33 @@
 #include "camInterface.hpp"
+#include <boost/filesystem.hpp>
+#include <iostream>
+#include "util/util.hpp"
 
 CamInterface::CamInterface(){};
 
 void CamInterface::setWindowName(string windowName){
     this->windowName = windowName;
 }
-int CamInterface::getLastFile(){
-    return 1;
+int CamInterface::getNextFile(){
+    string p = this->filePath;
+    string id = "0";
+    vector<int> nextIdVec;
+    int nextId = 0;
+    if (boost::filesystem::is_directory(p)){
+        boost::filesystem::directory_iterator end_iter;
+
+        for (boost::filesystem::directory_iterator dir_itr(p);dir_itr != end_iter;++dir_itr){
+            id = dir_itr->path().filename().string();
+            util::removePngFormat(id);
+            int temp = nextId;          
+            nextIdVec.push_back(stoi(id));
+            
+        }
+    }else{
+        return nextId;
+    }
+    nextId = *max_element(nextIdVec.begin(), nextIdVec.end());
+    return nextId+1;
 }
 
 void CamInterface::setFilePath(string filePath){
@@ -30,9 +51,7 @@ int CamInterface::openVideoCapture() {
     // PreDefined trained XML classifiers with facial features
     CascadeClassifier cascade, nestedCascade; 
     double scale=1;
- 
-    
- 
+
     // Start Video..1) 0 for WebCam 2) "Path to Video" for a Local Video
     capture.open(0); 
     if( capture.isOpened() )
@@ -57,7 +76,7 @@ int CamInterface::openVideoCapture() {
     }
 }
 
-int number = 0;
+
 // Function detectAndDisplay
 void CamInterface::detectAndDisplay(Mat frame){
     std::vector<Rect> faces;
@@ -113,15 +132,11 @@ void CamInterface::detectAndDisplay(Mat frame){
         cvtColor(crop, gray, CV_BGR2GRAY); // Convert cropped image to Grayscale
 
         // Form a fileName
-
-        if(number <= 1) {
+        if(this->getNextFile() <= 10) {
 	        stringstream ssfn;
 	        string fileToSave = this->getFilePath();
-	        ssfn << number << ".png";
+	        ssfn << this->getNextFile() << ".png";
 	        fileToSave += "/"+ssfn.str();
-            number++;
-            cout<<fileToSave<<endl;
-          	
             imwrite(fileToSave, gray);
         }
 
