@@ -37,6 +37,15 @@ string CamInterface::getFilePath(){
     return this->filePath;
 }
 
+void CamInterface::setMorePictures(bool morePictures){
+    this->morePictures = morePictures;
+}
+    
+bool CamInterface::getMorePictures(){
+    return this->morePictures;
+}
+
+
 int CamInterface::openVideoCapture() {
 	// Load the cascade
     if (!face_cascade.load(face_cascade_name)){
@@ -57,6 +66,7 @@ int CamInterface::openVideoCapture() {
     {
         // Capture frames from video and detect faces
         cout << "Face Detection Started...." << endl;
+        int countPictures = 0;
         while(1)
         {
             capture >> frame;
@@ -64,18 +74,28 @@ int CamInterface::openVideoCapture() {
                 break;
             Mat frame1 = frame.clone();
             
-            //bool save = false;
-            //char s = (char)waitKey(10);
-
-            detectAndDisplay(frame);
-            char c = (char)waitKey(10);
+            bool save = false;
+            char s = (char)waitKey(10);
 
             // Press s to save a picture
-            // if(s == 's' || s == 'S' ){
-            //     save = true;
-            // } 
+            if(s == 's' || s == 'S' ){
+                save = true;
+            } 
+
+            detectAndDisplay(frame,save,countPictures);
+            char c = (char)waitKey(10);
+
+           
             // Press q to exit from window
             if( c == 27 || c == 'q' || c == 'Q' ){
+                break;
+            }
+
+            if(this->getNextFile() == 10 && !this->getMorePictures()){
+                break;
+            }
+
+            if(this->getMorePictures() && countPictures == 10){
                 break;
             }
         }
@@ -84,9 +104,8 @@ int CamInterface::openVideoCapture() {
     }
 }
 
-
 // Function detectAndDisplay
-void CamInterface::detectAndDisplay(Mat frame){
+void CamInterface::detectAndDisplay(Mat frame, bool save, int &countPictures){
     std::vector<Rect> faces;
     Mat frame_gray;
     Mat crop;
@@ -139,13 +158,25 @@ void CamInterface::detectAndDisplay(Mat frame){
         resize(crop, res, Size(128, 128), 0, 0, INTER_LINEAR); // This will be needed later while saving images
         cvtColor(crop, gray, CV_BGR2GRAY); // Convert cropped image to Grayscale
 
-        // Form a fileName
-        if(this->getNextFile() <= 10) {
-	        stringstream ssfn;
-	        string fileToSave = this->getFilePath();
-	        ssfn << this->getNextFile() << ".png";
-	        fileToSave += "/"+ssfn.str();
-            imwrite(fileToSave, gray);
+        // Form a fileName and save
+        if(save){
+            if(this->getNextFile() < 10) {
+    	        stringstream ssfn;
+    	        string fileToSave = this->getFilePath();
+    	        ssfn << this->getNextFile() << ".png";
+    	        fileToSave += "/"+ssfn.str();
+                imwrite(fileToSave, gray);
+            }
+
+
+            if(this->getMorePictures() && countPictures < 10){
+                countPictures++;
+                stringstream ssfn;
+                string fileToSave = this->getFilePath();
+                ssfn << this->getNextFile() << ".png";
+                fileToSave += "/"+ssfn.str();
+                imwrite(fileToSave, gray);
+            }
         }
 
         Point pt1(faces[ic].x, faces[ic].y); // Display detected faces on main window - live stream from camera
@@ -156,7 +187,7 @@ void CamInterface::detectAndDisplay(Mat frame){
     // Show image
     //sstm << "Crop area size: " << roi_b.width << "x" << roi_b.height << " Filename: " << filePath;
     
-    sstm << "Aperte <S> para salvar a face detectada!!";
+    sstm << "Aperte <S> 10 vezes para salvar o rosto detectado!"<<"Foto: "<< this->getNextFile();
     text = sstm.str();
 
     putText(frame, text, cvPoint(30, 30), FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(0, 0, 255), 1, CV_AA);

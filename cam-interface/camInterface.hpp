@@ -19,6 +19,7 @@ protected:
     string windowName;
     CascadeClassifier face_cascade;
     int fileNumber;
+    bool morePictures = false;
     string filePath;
 public:
     CamInterface();
@@ -27,10 +28,13 @@ public:
     int getNextFile();
     void setFilePath(string filePath);
     string getFilePath();
+    void setMorePictures(bool morePictures);
+    bool getMorePictures();
+
 
 
     int openVideoCapture();
-    void detectAndDisplay(Mat frame);
+    void detectAndDisplay(Mat frame, bool save, int &countPictures);
 
 };
 #endif

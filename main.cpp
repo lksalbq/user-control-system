@@ -52,6 +52,7 @@ int main(int argc, char **argv){
 	CamInterface cam;
 	cam.setFilePath(st.getFacePicturesPath());
 	cam.setWindowName("MOSOQ");
+	cam.setMorePictures(true);
 
 	cam.openVideoCapture();
 	
