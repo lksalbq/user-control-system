@@ -13,15 +13,14 @@ int CamInterface::getNextFile(){
     string id = "0";
     vector<int> nextIdVec;
     int nextId = 0;
-    if (boost::filesystem::is_directory(p)){
+ 
+    if (boost::filesystem::is_directory(p) && !boost::filesystem::is_empty(p)){
         boost::filesystem::directory_iterator end_iter;
-
         for (boost::filesystem::directory_iterator dir_itr(p);dir_itr != end_iter;++dir_itr){
             id = dir_itr->path().filename().string();
             util::removePngFormat(id);
             int temp = nextId;          
             nextIdVec.push_back(stoi(id));
-            
         }
     }else{
         return nextId;
@@ -64,12 +63,21 @@ int CamInterface::openVideoCapture() {
             if( frame.empty() )
                 break;
             Mat frame1 = frame.clone();
+            
+            //bool save = false;
+            //char s = (char)waitKey(10);
+
             detectAndDisplay(frame);
             char c = (char)waitKey(10);
-         
+
+            // Press s to save a picture
+            // if(s == 's' || s == 'S' ){
+            //     save = true;
+            // } 
             // Press q to exit from window
-            if( c == 27 || c == 'q' || c == 'Q' ) 
+            if( c == 27 || c == 'q' || c == 'Q' ){
                 break;
+            }
         }
     }else{
         cout<<"Could not Open Camera";
@@ -146,7 +154,9 @@ void CamInterface::detectAndDisplay(Mat frame){
     }
 
     // Show image
-    sstm << "Crop area size: " << roi_b.width << "x" << roi_b.height << " Filename: " << filePath;
+    //sstm << "Crop area size: " << roi_b.width << "x" << roi_b.height << " Filename: " << filePath;
+    
+    sstm << "Aperte <S> para salvar a face detectada!!";
     text = sstm.str();
 
     putText(frame, text, cvPoint(30, 30), FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(0, 0, 255), 1, CV_AA);
