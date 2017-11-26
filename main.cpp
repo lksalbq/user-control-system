@@ -1,5 +1,6 @@
 #include "users/student.hpp"
 #include "users/professor.hpp"
+#include "users/employee.hpp"
 #include "discipline/discipline.hpp"
 #include "room/room.hpp"
 #include "cam-interface/camInterface.hpp"
@@ -33,28 +34,45 @@ int main(int argc, char **argv){
 	student.setLastName("de Albuquerque Silva");
 	student.setCpf("039.040.531-08");
 
+	Employee g;
+
+	g.setFunctionalRegistry("10209850");
+	g.setFirstName("Maria");
+	g.setLastName("de Albuquerque Silva");
+	g.setCpf("152.880.051-68");
+
 	//set face picture path
-	string facePath = util::createFacePicturesPath(student.getPathName(),student.getRegistry());
-	student.setFacePicturesPath(facePath);
+	util::saveJson(g.getPathName(),g.getFunctionalRegistry(),g.to_json());
+	string facePath = util::createFacePicturesPath(g.getPathName(),g.getFunctionalRegistry());
+	g.setFacePicturesPath(facePath);
+	util::saveJson(g.getPathName(),g.getFunctionalRegistry(),g.to_json());
 
-	util::createDirectory(student.getPathName());
-	util::saveJson(student.getPathName(),student.getRegistry(),student.to_json());
+	Employee e;
 
-	Student s;
+	string registry = "10209850";
+	json j = util::readJson(util::getJsonFullPath(e.getPathName(),registry));
 
-	string registry = "17/0149439";
-	json j = util::readJson(util::getJsonFullPath(s.getPathName(),registry));
+	Employee emp(j);
 
-	Student st(j);
+	cout << emp.getFacePicturesPath() <<endl;
 
-	cout << st.getFacePicturesPath() <<endl;
+	// CamInterface cam;
+	// cam.setFilePath(emp.getFacePicturesPath());
+	// cam.setWindowName("MOSOQ");
+	// cam.setMorePictures(false);
+	// cam.openVideoCapture(false);
 
-	CamInterface cam;
-	cam.setFilePath(st.getFacePicturesPath());
-	cam.setWindowName("MOSOQ");
-	cam.setMorePictures(true);
-
-	cam.openVideoCapture();
+	CamInterface cam2;
+	cam2.setFilePath(util::createFacePicturesPath(student.getPathName(),student.getRegistry()));
+	//cam2.setFilePath(emp.getFacePicturesPath());
+	cam2.setWindowName("MOSOQ");
+	int a = cam2.openVideoCapture(true);
 	
+	if(a>=1){
+		cout<<"FACE RECONHECIDA"<<endl;
+	}else{
+		cout<<"FACE NAO RECONHECIDA"<<endl;
+	}
+
   return 0;
 }

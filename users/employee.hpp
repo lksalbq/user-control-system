@@ -25,6 +25,8 @@ public:
 	string getFunctionalRegistry();
 	EmployeeType getEmployeeType();
 
+	string getPathName();
+
 	json to_json();
 };
 #endif 

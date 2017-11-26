@@ -39,3 +39,7 @@ json Employee::to_json() {
   j = json{{"person", this->person_to_json()},{"functionalRegistry", this->getFunctionalRegistry()},{"employee-type",this->getEmployeeType().to_json()}};
   return j;
 }
+
+string Employee::getPathName(){
+  	return "employees";
+}

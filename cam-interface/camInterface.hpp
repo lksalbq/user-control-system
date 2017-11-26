@@ -8,7 +8,11 @@
 #include "opencv2/imgproc.hpp"
 #include "opencv2/objdetect.hpp"
 #include <iostream>
+#include <fstream>
+#include <sstream>
  
+using namespace cv;
+using namespace cv::face;
 using namespace std;
 using namespace cv;
 
@@ -31,10 +35,13 @@ public:
     void setMorePictures(bool morePictures);
     bool getMorePictures();
 
-
-
-    int openVideoCapture();
-    void detectAndDisplay(Mat frame, bool save, int &countPictures);
+    int openVideoCapture(bool recognize);
+    Mat detectAndDisplay(Mat frame, bool save, int &countPictures);
+    bool recognizeFace(Mat imgTest);
+    
+    vector<Mat> getPersonImages();
+    vector<int> getImagesLabel();
+    void readFileNames(vector<string> &filenames);
 
 };
 #endif

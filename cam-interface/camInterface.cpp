@@ -46,7 +46,7 @@ bool CamInterface::getMorePictures(){
 }
 
 
-int CamInterface::openVideoCapture() {
+int CamInterface::openVideoCapture(bool recognize) {
 	// Load the cascade
     if (!face_cascade.load(face_cascade_name)){
         printf("--(!)Error loading\n");
@@ -61,7 +61,10 @@ int CamInterface::openVideoCapture() {
     double scale=1;
 
     // Start Video..1) 0 for WebCam 2) "Path to Video" for a Local Video
-    capture.open(0); 
+    capture.open(0);
+
+    int recognizedCount = 0;
+
     if( capture.isOpened() )
     {
         // Capture frames from video and detect faces
@@ -82,20 +85,39 @@ int CamInterface::openVideoCapture() {
                 save = true;
             } 
 
-            detectAndDisplay(frame,save,countPictures);
-            char c = (char)waitKey(10);
+            //return the croped image of face to be tested
+            Mat imgTest = detectAndDisplay(frame,save,countPictures);
 
-           
+            if(recognize){
+                bool isRecognized = false;
+                if(!imgTest.empty()){
+                    isRecognized = this->recognizeFace(imgTest);
+                   
+                    if(isRecognized){
+                        recognizedCount++;
+                    }else{
+                        recognizedCount--;
+                    }
+
+                    if(recognizedCount >= 15){
+                        return 1;
+                    }else if(recognizedCount < -15){
+                        return -1;
+                    }
+                }
+            }
+            
+            char c = (char)waitKey(10);
             // Press q to exit from window
             if( c == 27 || c == 'q' || c == 'Q' ){
                 break;
             }
-
-            if(this->getNextFile() == 10 && !this->getMorePictures()){
+             //save only 10 images 
+            if(this->getNextFile() == 10 && !this->getMorePictures() && !recognize){
                 break;
             }
 
-            if(this->getMorePictures() && countPictures == 10){
+            if(this->getMorePictures() && countPictures == 10 && !recognize){
                 break;
             }
         }
@@ -105,7 +127,7 @@ int CamInterface::openVideoCapture() {
 }
 
 // Function detectAndDisplay
-void CamInterface::detectAndDisplay(Mat frame, bool save, int &countPictures){
+Mat CamInterface::detectAndDisplay(Mat frame, bool save, int &countPictures){
     std::vector<Rect> faces;
     Mat frame_gray;
     Mat crop;
@@ -155,7 +177,7 @@ void CamInterface::detectAndDisplay(Mat frame, bool save, int &countPictures){
         }
 
         crop = frame(roi_b);
-        resize(crop, res, Size(128, 128), 0, 0, INTER_LINEAR); // This will be needed later while saving images
+        resize(crop, res, Size(168, 192), 0, 0, INTER_LINEAR); // This will be needed later while saving images
         cvtColor(crop, gray, CV_BGR2GRAY); // Convert cropped image to Grayscale
 
         // Form a fileName and save
@@ -167,7 +189,6 @@ void CamInterface::detectAndDisplay(Mat frame, bool save, int &countPictures){
     	        fileToSave += "/"+ssfn.str();
                 imwrite(fileToSave, gray);
             }
-
 
             if(this->getMorePictures() && countPictures < 10){
                 countPictures++;
@@ -196,7 +217,115 @@ void CamInterface::detectAndDisplay(Mat frame, bool save, int &countPictures){
     if (!crop.empty())
     {
         imshow("detected", crop);
+        Mat recognized; 
+        crop.copyTo(recognized);
+        resize(recognized, res, Size(168, 192), 0, 0, INTER_LINEAR); // This will be needed later while saving images
+        return recognized;
     }
     else
         destroyWindow("detected");
+}
+
+bool CamInterface::recognizeFace(Mat imgTest){
+    
+    vector<Mat> images = this->getPersonImages();
+    vector<int> labels = this->getImagesLabel();
+    Mat grayTest;
+
+    cvtColor(imgTest,grayTest,CV_BGR2GRAY,1);
+    int testLabel = labels[labels.size() - 1];
+
+    // The following lines create an LBPH model for
+    // face recognition and train it with the images and
+    // labels read from the given CSV file.
+    //
+    // The LBPHFaceRecognizer uses Extended Local Binary Patterns
+    // (it's probably configurable with other operators at a later
+    // point), and has the following default values
+    //
+    //      radius = 1
+    //      neighbors = 8
+    //      grid_x = 8
+    //      grid_y = 8
+    //
+    // So if you want a LBPH FaceRecognizer using a radius of
+    // 2 and 16 neighbors, call the factory method with:
+    //
+    //      cv::face::LBPHFaceRecognizer::create(2, 16);
+    //
+    // And if you want a threshold (e.g. 123.0) call it with its default values:
+    //
+    //      cv::face::LBPHFaceRecognizer::create(1,8,8,8,123.0)
+    //
+    Ptr<LBPHFaceRecognizer> model = LBPHFaceRecognizer::create(2,16);
+    
+
+    model->setThreshold(123.0);
+    model->train(images, labels);
+    int predictedLabel = model->predict(grayTest);
+    cout << "Predicted class = " << predictedLabel << endl;
+    
+    // Show some informations about the model, as there's no cool
+    // Model data to display as in Eigenfaces/Fisherfaces.
+    // Due to efficiency reasons the LBP images are not stored
+    // within the model:
+    cout << "Model Information:" << endl;
+    string model_info = format("\tLBPH(radius=%i, neighbors=%i, grid_x=%i, grid_y=%i, threshold=%.2f)",
+            model->getRadius(),
+            model->getNeighbors(),
+            model->getGridX(),
+            model->getGridY(),
+            model->getThreshold());
+    cout << model_info << endl;
+    // We could get the histograms for example:
+    vector<Mat> histograms = model->getHistograms();
+    // But should I really visualize it? Probably the length is interesting:
+    cout << "Size of the histograms: " << histograms[0].total() << endl;
+
+    if(predictedLabel == -1){
+        return false;
+    }else{
+        return true;
+    }
+}
+
+vector<Mat> CamInterface::getPersonImages(){
+
+    vector<Mat> personImages;
+    vector<string> filenames;
+       
+    this->readFileNames(filenames); 
+    for(size_t i = 0; i < filenames.size(); ++i){
+        personImages.push_back(imread(this->filePath+"/"+filenames[i], 0));
+    }
+    return personImages;
+}
+
+vector<int> CamInterface::getImagesLabel(){
+    string p = this->filePath;
+    vector<string> filenames;
+    vector<int> imagesLabel;
+    string label = "0";
+    
+    this->readFileNames(filenames);
+    for(size_t i = 0; i < filenames.size(); ++i){
+        label = filenames[i];
+        util::removePngFormat(label);
+        imagesLabel.push_back(stoi(label));
+    }
+    std::sort(imagesLabel.begin(),imagesLabel.end());
+    return imagesLabel;
+}
+
+void CamInterface::readFileNames(vector<string> &filenames){
+    string p = this->filePath;
+    
+    if (boost::filesystem::is_directory(p) && !boost::filesystem::is_empty(p)){
+        boost::filesystem::directory_iterator end_iter;
+        for (boost::filesystem::directory_iterator dir_itr(p);dir_itr != end_iter;++dir_itr){
+            filenames.push_back(dir_itr->path().filename().string());
+        }
+        std::sort(filenames.begin(),filenames.end());
+    }
+
 }
