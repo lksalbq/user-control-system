@@ -36,12 +36,13 @@ public:
     bool getMorePictures();
 
     int openVideoCapture(bool recognize);
-    Mat detectAndDisplay(Mat frame, bool save, int &countPictures);
+    Mat detectAndDisplay(Mat frame, bool save, int &countPictures,bool recognize);
     bool recognizeFace(Mat imgTest);
     
     vector<Mat> getPersonImages();
     vector<int> getImagesLabel();
     void readFileNames(vector<string> &filenames);
+    void saveAndEqualizeImage(Mat &gray);
 
 };
 #endif

@@ -86,7 +86,7 @@ int CamInterface::openVideoCapture(bool recognize) {
             } 
 
             //return the croped image of face to be tested
-            Mat imgTest = detectAndDisplay(frame,save,countPictures);
+            Mat imgTest = detectAndDisplay(frame,save,countPictures,recognize);
 
             if(recognize){
                 bool isRecognized = false;
@@ -113,11 +113,7 @@ int CamInterface::openVideoCapture(bool recognize) {
                 break;
             }
              //save only 10 images 
-            if(this->getNextFile() == 10 && !this->getMorePictures() && !recognize){
-                break;
-            }
-
-            if(this->getMorePictures() && countPictures == 10 && !recognize){
+            if(countPictures == 10 && !recognize){
                 break;
             }
         }
@@ -127,7 +123,7 @@ int CamInterface::openVideoCapture(bool recognize) {
 }
 
 // Function detectAndDisplay
-Mat CamInterface::detectAndDisplay(Mat frame, bool save, int &countPictures){
+Mat CamInterface::detectAndDisplay(Mat frame, bool save, int &countPictures,bool recognize){
     std::vector<Rect> faces;
     Mat frame_gray;
     Mat crop;
@@ -182,21 +178,9 @@ Mat CamInterface::detectAndDisplay(Mat frame, bool save, int &countPictures){
 
         // Form a fileName and save
         if(save){
-            if(this->getNextFile() < 10) {
-    	        stringstream ssfn;
-    	        string fileToSave = this->getFilePath();
-    	        ssfn << this->getNextFile() << ".png";
-    	        fileToSave += "/"+ssfn.str();
-                imwrite(fileToSave, gray);
-            }
-
-            if(this->getMorePictures() && countPictures < 10){
+            if(countPictures < 10){
                 countPictures++;
-                stringstream ssfn;
-                string fileToSave = this->getFilePath();
-                ssfn << this->getNextFile() << ".png";
-                fileToSave += "/"+ssfn.str();
-                imwrite(fileToSave, gray);
+                this->saveAndEqualizeImage(gray);
             }
         }
 
@@ -208,22 +192,26 @@ Mat CamInterface::detectAndDisplay(Mat frame, bool save, int &countPictures){
     // Show image
     //sstm << "Crop area size: " << roi_b.width << "x" << roi_b.height << " Filename: " << filePath;
     
-    sstm << "Aperte <S> 10 vezes para salvar o rosto detectado!"<<"Foto: "<< this->getNextFile();
+    if(recognize){
+        sstm << "Reconhecendo o rosto, aguarde um instante..."; 
+    }else{
+        sstm << "Aperte <S> 10 vezes para salvar o rosto detectado!"<<"Foto: "<< this->getNextFile(); 
+    }
+
     text = sstm.str();
 
     putText(frame, text, cvPoint(30, 30), FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(0, 0, 255), 1, CV_AA);
     imshow("original", frame);
 
-    if (!crop.empty())
-    {
+    if (!crop.empty()){
         imshow("detected", crop);
         Mat recognized; 
+        resize(crop, res, Size(168, 192), 0, 0, INTER_LINEAR);
         crop.copyTo(recognized);
-        resize(recognized, res, Size(168, 192), 0, 0, INTER_LINEAR); // This will be needed later while saving images
         return recognized;
-    }
-    else
+    }else{
         destroyWindow("detected");
+    }
 }
 
 bool CamInterface::recognizeFace(Mat imgTest){
@@ -232,56 +220,21 @@ bool CamInterface::recognizeFace(Mat imgTest){
     vector<int> labels = this->getImagesLabel();
     Mat grayTest;
 
+    //transform imgTest to grayScale
     cvtColor(imgTest,grayTest,CV_BGR2GRAY,1);
-    int testLabel = labels[labels.size() - 1];
 
-    // The following lines create an LBPH model for
-    // face recognition and train it with the images and
-    // labels read from the given CSV file.
-    //
-    // The LBPHFaceRecognizer uses Extended Local Binary Patterns
-    // (it's probably configurable with other operators at a later
-    // point), and has the following default values
-    //
-    //      radius = 1
-    //      neighbors = 8
-    //      grid_x = 8
-    //      grid_y = 8
-    //
-    // So if you want a LBPH FaceRecognizer using a radius of
-    // 2 and 16 neighbors, call the factory method with:
-    //
-    //      cv::face::LBPHFaceRecognizer::create(2, 16);
-    //
-    // And if you want a threshold (e.g. 123.0) call it with its default values:
-    //
-    //      cv::face::LBPHFaceRecognizer::create(1,8,8,8,123.0)
-    //
+    //equalize images histogram
+    Ptr<CLAHE> clahe = createCLAHE();
+    Mat cl1;
+    clahe->setClipLimit(4);
+    clahe->apply(grayTest,grayTest);
+
     Ptr<LBPHFaceRecognizer> model = LBPHFaceRecognizer::create(2,16);
     
-
-    model->setThreshold(123.0);
+    model->setThreshold(126.0);
     model->train(images, labels);
     int predictedLabel = model->predict(grayTest);
-    cout << "Predicted class = " << predictedLabel << endl;
     
-    // Show some informations about the model, as there's no cool
-    // Model data to display as in Eigenfaces/Fisherfaces.
-    // Due to efficiency reasons the LBP images are not stored
-    // within the model:
-    cout << "Model Information:" << endl;
-    string model_info = format("\tLBPH(radius=%i, neighbors=%i, grid_x=%i, grid_y=%i, threshold=%.2f)",
-            model->getRadius(),
-            model->getNeighbors(),
-            model->getGridX(),
-            model->getGridY(),
-            model->getThreshold());
-    cout << model_info << endl;
-    // We could get the histograms for example:
-    vector<Mat> histograms = model->getHistograms();
-    // But should I really visualize it? Probably the length is interesting:
-    cout << "Size of the histograms: " << histograms[0].total() << endl;
-
     if(predictedLabel == -1){
         return false;
     }else{
@@ -328,4 +281,18 @@ void CamInterface::readFileNames(vector<string> &filenames){
         std::sort(filenames.begin(),filenames.end());
     }
 
+}
+
+void CamInterface::saveAndEqualizeImage(Mat &gray){
+    stringstream ssfn;
+    string fileToSave = this->getFilePath();
+    ssfn << this->getNextFile() << ".png";
+    fileToSave += "/"+ssfn.str();
+
+    //equalize images histogram
+    Ptr<CLAHE> clahe = createCLAHE();
+    Mat cl1;
+    clahe->setClipLimit(4);
+    clahe->apply(gray,gray);
+    imwrite(fileToSave, gray);
 }

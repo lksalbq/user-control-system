@@ -34,8 +34,10 @@ int main(int argc, char **argv){
 	student.setLastName("de Albuquerque Silva");
 	student.setCpf("039.040.531-08");
 
-	Employee g;
+	string stFace = util::createFacePicturesPath(student.getPathName(),student.getRegistry());
+	student.setFacePicturesPath(stFace);
 
+	Employee g;
 	g.setFunctionalRegistry("10209850");
 	g.setFirstName("Maria");
 	g.setLastName("de Albuquerque Silva");
@@ -57,9 +59,8 @@ int main(int argc, char **argv){
 	cout << emp.getFacePicturesPath() <<endl;
 
 	// CamInterface cam;
-	// cam.setFilePath(emp.getFacePicturesPath());
+	// cam.setFilePath(student.getFacePicturesPath());
 	// cam.setWindowName("MOSOQ");
-	// cam.setMorePictures(false);
 	// cam.openVideoCapture(false);
 
 	CamInterface cam2;
