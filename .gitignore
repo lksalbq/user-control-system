@@ -13,3 +13,4 @@ control-system
 *.gch
 json_db/
 *.json
+*.pro
