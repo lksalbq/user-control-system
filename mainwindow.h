@@ -42,6 +42,7 @@ private:
     void saveFacePictures(string facePicturesPath);
     void saveStudent(string firstName, string lastName, string cpf);
     void saveProfessor(string firstName, string lastName, string cpf);
+    void saveEmployee(string firstName, string lastName, string cpf);
     void cleanUserRegisterForm();
 };
 

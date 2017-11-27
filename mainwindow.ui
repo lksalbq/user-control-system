@@ -211,6 +211,26 @@ alternate-background-color: rgb(243, 243, 243);</string>
          <property name="enabled">
           <bool>false</bool>
          </property>
+         <item>
+          <property name="text">
+           <string/>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>CPD</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Empresa X</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Empresa Y</string>
+          </property>
+         </item>
         </widget>
        </item>
       </layout>
@@ -244,8 +264,8 @@ alternate-background-color: rgb(243, 243, 243);</string>
      <widget class="QCommandLinkButton" name="saveFaces">
       <property name="geometry">
        <rect>
-        <x>350</x>
-        <y>370</y>
+        <x>340</x>
+        <y>390</y>
         <width>361</width>
         <height>53</height>
        </rect>

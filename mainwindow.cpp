@@ -65,13 +65,13 @@ void MainWindow::on_userTypeComboBox_activated(const QString &arg1){
         ui->functionalRegistryLineEdit->setEnabled(true);
         ui->companyComboBox->setEnabled(true);
         ui->employeeTypeLineEdit->setEnabled(true);
-        QRadioButton *radio1 = new QRadioButton(tr("&Sim"));
+
+        /* QRadioButton *radio1 = new QRadioButton(tr("&Sim"));
         QRadioButton *radio2 = new QRadioButton(tr("&Não"));
         QVBoxLayout *vbox = new QVBoxLayout;
         vbox->addWidget(radio1);
         vbox->addWidget(radio2);
-
-        ui->formLayout->addRow("Externo?",vbox);
+        ui->formLayout->addRow("Externo?",vbox);*/
     }
 }
 
@@ -104,10 +104,11 @@ void MainWindow::on_saveUser_clicked(){
         //save professor
         this->saveProfessor(firstName,lastName,cpf);
     }else if(userType == "Estudante"){
+        //save student
         this->saveStudent(firstName,lastName,cpf);
-
     }else if(userType == "Funcionário"){
         //save employee
+        this->saveEmployee(firstName,lastName,cpf);
     }
 
 
@@ -172,6 +173,41 @@ void MainWindow::saveProfessor(string firstName, string lastName, string cpf){
     this->on_cleanForm_clicked();
 }
 
+void MainWindow::saveEmployee(string firstName, string lastName, string cpf){
+    //save employee
+
+    //first set all attributes
+    Employee emp;
+    emp.setFirstName(firstName);
+    emp.setLastName(lastName);
+    emp.setCpf(cpf);
+    emp.setFacePicturesPath(util::getexepath()+"/json_db/Funcionário/faces-path/"+emp.getCpf());
+
+    EmployeeType et;
+    et.setCompany(ui->companyComboBox->currentText().toUtf8().constData());
+    et.setType(ui->employeeTypeLineEdit->text().toUtf8().constData());
+    et.setInternal(true);
+
+    emp.setEmployeeType(et);
+
+    if(ui->functionalRegistryLineEdit->text().isEmpty()){
+        QString message = "O campo registro funcional é obrigatório";
+        this->alertMessage(message);
+        return;
+    }else if(!boost::filesystem::is_directory(emp.getFacePicturesPath())){
+        QString message = "O usuário deve ter fotos da face!";
+        this->alertMessage(message);
+        return;
+    }
+
+    emp.setFunctionalRegistry(ui->functionalRegistryLineEdit->text().toUtf8().constData());
+
+    //and finally save on json db
+    util::saveJson("Funcionário",emp.getCpf(),emp.to_json());
+    QString msg = "Funcionário salvo com sucesso!";
+    this->alertMessage(msg);
+    this->on_cleanForm_clicked();
+}
 
 void MainWindow::alertMessage(QString message){
     QMessageBox msgBox;
