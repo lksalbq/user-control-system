@@ -20,8 +20,8 @@
    <widget class="QTabWidget" name="tabWidget">
     <property name="geometry">
      <rect>
-      <x>70</x>
-      <y>20</y>
+      <x>40</x>
+      <y>10</y>
       <width>1061</width>
       <height>581</height>
      </rect>
@@ -228,7 +228,7 @@ alternate-background-color: rgb(243, 243, 243);</string>
        <string>Salvar</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="pushButton_2">
+     <widget class="QPushButton" name="cleanForm">
       <property name="geometry">
        <rect>
         <x>320</x>
@@ -239,6 +239,22 @@ alternate-background-color: rgb(243, 243, 243);</string>
       </property>
       <property name="text">
        <string>Limpar</string>
+      </property>
+     </widget>
+     <widget class="QCommandLinkButton" name="saveFaces">
+      <property name="geometry">
+       <rect>
+        <x>350</x>
+        <y>370</y>
+        <width>361</width>
+        <height>53</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(211, 215, 207);</string>
+      </property>
+      <property name="text">
+       <string>Capturar faces do usuário</string>
       </property>
      </widget>
     </widget>

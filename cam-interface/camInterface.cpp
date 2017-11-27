@@ -88,6 +88,11 @@ int CamInterface::openVideoCapture(bool recognize) {
             //return the croped image of face to be tested
             Mat imgTest = detectAndDisplay(frame,save,countPictures,recognize);
 
+            //save only 10 images
+            if(countPictures == 10 && !recognize){
+               break;
+            }
+
             if(recognize){
                 bool isRecognized = false;
                 if(!imgTest.empty()){
@@ -112,14 +117,12 @@ int CamInterface::openVideoCapture(bool recognize) {
             if( c == 27 || c == 'q' || c == 'Q' ){
                 break;
             }
-             //save only 10 images 
-            if(countPictures == 10 && !recognize){
-                break;
-            }
+
         }
     }else{
         cout<<"Could not Open Camera";
     }
+
 }
 
 // Function detectAndDisplay

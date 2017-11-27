@@ -14,3 +14,4 @@ control-system
 json_db/
 *.json
 *.pro
+control-system_autogen/

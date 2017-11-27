@@ -72,14 +72,14 @@ void util::removePngFormat(std::string &stringValue){
     stringValue.erase(stringValue.size()-4,4);
 }
 
-string util::createFacePicturesPath(string identifier, string pathName){
-    util::sanitize(pathName);
-    util::createDirectory(util::getexepath()+"/json_db/"+identifier+"/faces-path");
-    util::createDirectory(util::getexepath()+"/json_db/"+identifier+"/faces-path/"+pathName);
-    return util::getexepath()+"/json_db/"+identifier+"/faces-path/"+pathName;
+string util::createFacePicturesPath(string userType, string identifier){
+    util::sanitize(identifier);
+    util::createDirectory(util::getexepath()+"/json_db/"+userType+"/faces-path");
+    util::createDirectory(util::getexepath()+"/json_db/"+userType+"/faces-path/"+identifier);
+    return util::getexepath()+"/json_db/"+userType+"/faces-path/"+identifier;
 }
 
-string util::getJsonFullPath(string pathName,string fileId){
+string util::getJsonFullPath(string userType,string fileId){
     util::sanitize(fileId);
-    return util::getexepath()+"/json_db/"+pathName+"/"+fileId+".json";
+    return util::getexepath()+"/json_db/"+userType+"/"+fileId+".json";
 }

@@ -7,17 +7,22 @@
 #include <QGroupBox>
 #include <QtDebug>
 #include <QFormLayout>
-
 #include <QtWidgets/QLayout>
-
+#include <string>
+#include <vector>
+#include <iostream>
+#include <fstream>
 #include "person/person.hpp"
 #include "users/student.hpp"
 #include "users/professor.hpp"
 #include "users/employee.hpp"
 #include "users/employeetype.hpp"
 #include "util/util.hpp"
+#include "cam-interface/camInterface.hpp"
 #include "config/json.hpp"
 #include "util/util.hpp"
+
+using namespace std;
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -34,7 +39,9 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_userTypeComboBox_activated(const QString &arg1){
     if(arg1.isEmpty()){
-
+        QString message = "O campo tipo de usuário obrigatório";
+        this->alertMessage(message);
+        return;
     }
 
     ui->registryLineEdit->setEnabled(false);
@@ -72,13 +79,20 @@ void MainWindow::on_saveUser_clicked(){
     QString userType = ui->userTypeComboBox->currentText();
 
     if(ui->firstNameLineEdit->text().isEmpty()){
-        this->alertMessage();
+        QString message = "O campo nome é obrigatório";
+        this->alertMessage(message);
         return;
     }else if(ui->lastNameEdit->text().isEmpty()){
-        this->alertMessage();
+        QString message = "O campo sobrenome é obrigatório";
+        this->alertMessage(message);
         return;
     }else if(ui->cpfLineEdit->text().isEmpty()){
-        this->alertMessage();
+        QString message = "O campo cpf é obrigatório";
+        this->alertMessage(message);
+        return;
+    }else if(userType.isEmpty()){
+        QString message = "O campo tipo de usuário obrigatório";
+        this->alertMessage(message);
         return;
     }
 
@@ -89,19 +103,7 @@ void MainWindow::on_saveUser_clicked(){
     if(userType == "Professor"){
         //save professor
     }else if(userType == "Estudante"){
-        //save student
-
-        //first set all attributes
-        Student s;
-        s.setFirstName(firstName);
-        s.setLastName(lastName);
-        s.setCpf(cpf);
-        s.setRegistry(ui->registryLineEdit->text().toUtf8().constData());
-        string facePicturesPath = util::createFacePicturesPath(s.getPathName(),s.getRegistry());
-        s.setFacePicturesPath(facePicturesPath);
-
-        //and finally save on json db
-        util::saveJson(s.getPathName(),s.getRegistry(),s.to_json());
+        this->saveStudent(firstName,lastName,cpf);
 
     }else if(userType == "Funcionário"){
         //save employee
@@ -110,10 +112,85 @@ void MainWindow::on_saveUser_clicked(){
 
 }
 
-void MainWindow::alertMessage(){
+void MainWindow::saveStudent(string firstName, string lastName, string cpf){
+    //save student
+
+    //first set all attributes
+    Student s;
+    s.setFirstName(firstName);
+    s.setLastName(lastName);
+    s.setCpf(cpf);
+    s.setFacePicturesPath(util::getexepath()+"/json_db/Estudante/faces-path/"+s.getCpf());
+
+    if(ui->registryLineEdit->text().isEmpty()){
+        QString message = "O campo cpf é obrigatório";
+        this->alertMessage(message);
+        return;
+    }else if(!boost::filesystem::is_directory(s.getFacePicturesPath())){
+        QString message = "O usuário deve ter fotos da face!";
+        this->alertMessage(message);
+        return;
+    }
+
+    s.setRegistry(ui->registryLineEdit->text().toUtf8().constData());
+
+    //and finally save on json db
+    util::saveJson("Estudante",s.getCpf(),s.to_json());
+    QString msg = "Estudante Salvo com sucesso!";
+    this->alertMessage(msg);
+    this->on_cleanForm_clicked();
+}
+
+void MainWindow::alertMessage(QString message){
     QMessageBox msgBox;
     msgBox.setWindowTitle("Alerta!");
-    msgBox.setText("Preencha todos os campos!");
+    msgBox.setText(message);
     msgBox.setStandardButtons(QMessageBox::Ok);
     msgBox.exec();
+}
+
+void MainWindow::saveFacePictures(string facePicturesPath){
+
+    CamInterface cam;
+    cam.setFilePath(facePicturesPath);
+    cam.setWindowName("Tirar fotos da face");
+    cam.openVideoCapture(false);
+}
+
+void MainWindow::on_saveFaces_clicked(){
+    string fullFacePath;
+
+    if(ui->cpfLineEdit->text().isEmpty()){
+        QString msg = "Informe o cpf do usuario!";
+        this->alertMessage(msg);
+        return;
+    }else if(ui->userTypeComboBox->currentText().isEmpty()){
+        QString msg = "Informe o tipo do usuario!";
+        this->alertMessage(msg);
+        return;
+     }else{
+        string userType = ui->userTypeComboBox->currentText().toUtf8().constData();
+        string identifier = ui->cpfLineEdit->text().toUtf8().constData();
+        fullFacePath = util::createFacePicturesPath(userType,identifier);
+
+        this->saveFacePictures(fullFacePath);
+        QString message = "Imagens capturadas com sucesso!";
+        this->alertMessage(message);
+    }
+
+
+}
+
+void MainWindow::on_cleanForm_clicked(){
+   this->cleanUserRegisterForm();
+}
+
+void MainWindow::cleanUserRegisterForm(){
+    ui->registryLineEdit->clear();
+    ui->functionalRegistryLineEdit->clear();
+    ui->employeeTypeLineEdit->clear();
+    ui->companyComboBox->setCurrentIndex(0);
+    ui->firstNameLineEdit->clear();
+    ui->lastNameEdit->clear();
+    ui->cpfLineEdit->clear();
 }
