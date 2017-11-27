@@ -41,6 +41,7 @@ private:
     void alertMessage(QString message);
     void saveFacePictures(string facePicturesPath);
     void saveStudent(string firstName, string lastName, string cpf);
+    void saveProfessor(string firstName, string lastName, string cpf);
     void cleanUserRegisterForm();
 };
 

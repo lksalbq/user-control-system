@@ -74,6 +74,8 @@ void util::removePngFormat(std::string &stringValue){
 
 string util::createFacePicturesPath(string userType, string identifier){
     util::sanitize(identifier);
+    util::createDirectory(util::getexepath()+"/json_db");
+    util::createDirectory(util::getexepath()+"/json_db/"+userType);
     util::createDirectory(util::getexepath()+"/json_db/"+userType+"/faces-path");
     util::createDirectory(util::getexepath()+"/json_db/"+userType+"/faces-path/"+identifier);
     return util::getexepath()+"/json_db/"+userType+"/faces-path/"+identifier;

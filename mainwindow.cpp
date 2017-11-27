@@ -102,6 +102,7 @@ void MainWindow::on_saveUser_clicked(){
 
     if(userType == "Professor"){
         //save professor
+        this->saveProfessor(firstName,lastName,cpf);
     }else if(userType == "Estudante"){
         this->saveStudent(firstName,lastName,cpf);
 
@@ -123,7 +124,7 @@ void MainWindow::saveStudent(string firstName, string lastName, string cpf){
     s.setFacePicturesPath(util::getexepath()+"/json_db/Estudante/faces-path/"+s.getCpf());
 
     if(ui->registryLineEdit->text().isEmpty()){
-        QString message = "O campo cpf é obrigatório";
+        QString message = "O campo matrícula é obrigatório";
         this->alertMessage(message);
         return;
     }else if(!boost::filesystem::is_directory(s.getFacePicturesPath())){
@@ -136,10 +137,41 @@ void MainWindow::saveStudent(string firstName, string lastName, string cpf){
 
     //and finally save on json db
     util::saveJson("Estudante",s.getCpf(),s.to_json());
-    QString msg = "Estudante Salvo com sucesso!";
+    QString msg = "Estudante salvo com sucesso!";
     this->alertMessage(msg);
     this->on_cleanForm_clicked();
 }
+
+
+void MainWindow::saveProfessor(string firstName, string lastName, string cpf){
+    //save professor
+
+    //first set all attributes
+    Professor p;
+    p.setFirstName(firstName);
+    p.setLastName(lastName);
+    p.setCpf(cpf);
+    p.setFacePicturesPath(util::getexepath()+"/json_db/Professor/faces-path/"+p.getCpf());
+
+    if(ui->functionalRegistryLineEdit->text().isEmpty()){
+        QString message = "O campo registro funcional é obrigatório";
+        this->alertMessage(message);
+        return;
+    }else if(!boost::filesystem::is_directory(p.getFacePicturesPath())){
+        QString message = "O usuário deve ter fotos da face!";
+        this->alertMessage(message);
+        return;
+    }
+
+    p.setFunctionalRegistry(ui->functionalRegistryLineEdit->text().toUtf8().constData());
+
+    //and finally save on json db
+    util::saveJson("Professor",p.getCpf(),p.to_json());
+    QString msg = "Professor salvo com sucesso!";
+    this->alertMessage(msg);
+    this->on_cleanForm_clicked();
+}
+
 
 void MainWindow::alertMessage(QString message){
     QMessageBox msgBox;
