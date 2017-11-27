@@ -9,6 +9,8 @@
 #include <QFormLayout>
 #include <QtWidgets/QLayout>
 #include <QInputDialog>
+#include <QStringData>
+#include <QStandardItem>
 #include <string>
 #include <vector>
 #include <iostream>
@@ -291,5 +293,39 @@ void MainWindow::on_identifyUserButton_clicked(){
             this->alertMessage(msg);
         }
 
+    }
+}
+
+void MainWindow::populateUserList(){
+    ui->userTableWidget->setAutoScroll(true);
+
+
+    for(int i=0;i<20;i++){
+        ui->userTableWidget->insertRow(ui->userTableWidget->rowCount());
+        QTableWidgetItem *firstRow = new QTableWidgetItem(QString("ColumnValue"));
+        ui->userTableWidget->setItem(i,i,firstRow);
+    }
+
+}
+
+void MainWindow::on_takeMorePictures_clicked(){
+    bool ok;
+    QString cpf = QInputDialog::getText(this, tr("Identificar Usuário:"),
+                                             tr("CPF:"), QLineEdit::Normal,"", &ok);
+    if (ok && !cpf.isEmpty()){
+        string userFullPath = util::getUser(cpf.toUtf8().constData());
+        if(userFullPath.length() == 0){
+            QString msg = "Usuário não encontrado no sistema! Por favor faça o cadastro";
+            this->alertMessage(msg);
+            return;
+        }
+
+        json j = util::readJson(userFullPath);
+        Person p(j);
+
+        this->openVideoCapture(p.getFacePicturesPath(),false);
+
+        QString msg = "Fotos adicionadas com sucesso!";
+        this->alertMessage(msg);
     }
 }

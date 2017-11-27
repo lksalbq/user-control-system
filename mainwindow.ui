@@ -38,7 +38,7 @@
        <rect>
         <x>150</x>
         <y>50</y>
-        <width>711</width>
+        <width>721</width>
         <height>192</height>
        </rect>
       </property>
@@ -62,18 +62,31 @@
        </property>
       </column>
      </widget>
-     <widget class="QCommandLinkButton" name="identifyUserButton">
+     <widget class="QWidget" name="">
       <property name="geometry">
        <rect>
-        <x>50</x>
-        <y>400</y>
-        <width>291</width>
-        <height>53</height>
+        <x>140</x>
+        <y>350</y>
+        <width>751</width>
+        <height>55</height>
        </rect>
       </property>
-      <property name="text">
-       <string>Identificar Usuário</string>
-      </property>
+      <layout class="QGridLayout" name="gridLayout">
+       <item row="0" column="0">
+        <widget class="QCommandLinkButton" name="identifyUserButton">
+         <property name="text">
+          <string>Identificar Usuário</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QCommandLinkButton" name="takeMorePictures">
+         <property name="text">
+          <string>Tirar Mais Fotos do Usuário</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </widget>
     </widget>
     <widget class="QWidget" name="tab_2">

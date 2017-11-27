@@ -27,6 +27,7 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+    void populateUserList();
 private slots:
     void on_userTypeComboBox_activated(const QString &arg1);
 
@@ -38,6 +39,8 @@ private slots:
 
     void on_identifyUserButton_clicked();
 
+    void on_takeMorePictures_clicked();
+
 private:
     Ui::MainWindow *ui;
     void alertMessage(QString message);
@@ -46,6 +49,7 @@ private:
     void saveProfessor(string firstName, string lastName, string cpf);
     void saveEmployee(string firstName, string lastName, string cpf);
     void cleanUserRegisterForm();
+
 };
 
 #endif // MAINWINDOW_H
