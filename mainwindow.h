@@ -36,10 +36,12 @@ private slots:
 
     void on_cleanForm_clicked();
 
+    void on_identifyUserButton_clicked();
+
 private:
     Ui::MainWindow *ui;
     void alertMessage(QString message);
-    void saveFacePictures(string facePicturesPath);
+    int openVideoCapture(string facePicturesPath,bool recognize);
     void saveStudent(string firstName, string lastName, string cpf);
     void saveProfessor(string firstName, string lastName, string cpf);
     void saveEmployee(string firstName, string lastName, string cpf);

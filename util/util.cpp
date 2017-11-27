@@ -85,3 +85,18 @@ string util::getJsonFullPath(string userType,string fileId){
     util::sanitize(fileId);
     return util::getexepath()+"/json_db/"+userType+"/"+fileId+".json";
 }
+
+string util::getUser(string cpf){
+    util::sanitize(cpf);
+    string rootPath = util::getexepath()+"/json_db";
+
+    if(boost::filesystem::exists(rootPath+"/Estudante/"+cpf+".json")){
+        return rootPath+"/Estudante/"+cpf+".json";
+    }else if (boost::filesystem::exists(rootPath+"/Professor/"+cpf+".json")){
+        return rootPath+"/Professor/"+cpf+".json";
+    }else if (boost::filesystem::exists(rootPath+"/Funcionário/"+cpf+".json")){
+        return rootPath+"/Funcionário/"+cpf+".json";
+    }
+
+    return "";
+}

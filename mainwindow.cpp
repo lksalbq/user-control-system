@@ -8,6 +8,7 @@
 #include <QtDebug>
 #include <QFormLayout>
 #include <QtWidgets/QLayout>
+#include <QInputDialog>
 #include <string>
 #include <vector>
 #include <iostream>
@@ -217,12 +218,14 @@ void MainWindow::alertMessage(QString message){
     msgBox.exec();
 }
 
-void MainWindow::saveFacePictures(string facePicturesPath){
+int MainWindow::openVideoCapture(string facePicturesPath, bool recognize){
 
     CamInterface cam;
     cam.setFilePath(facePicturesPath);
-    cam.setWindowName("Tirar fotos da face");
-    cam.openVideoCapture(false);
+    cam.setWindowName("Identificar Face");
+    int recognized = cam.openVideoCapture(recognize);
+
+    return recognized;
 }
 
 void MainWindow::on_saveFaces_clicked(){
@@ -241,7 +244,7 @@ void MainWindow::on_saveFaces_clicked(){
         string identifier = ui->cpfLineEdit->text().toUtf8().constData();
         fullFacePath = util::createFacePicturesPath(userType,identifier);
 
-        this->saveFacePictures(fullFacePath);
+        this->openVideoCapture(fullFacePath,false);
         QString message = "Imagens capturadas com sucesso!";
         this->alertMessage(message);
     }
@@ -261,4 +264,32 @@ void MainWindow::cleanUserRegisterForm(){
     ui->firstNameLineEdit->clear();
     ui->lastNameEdit->clear();
     ui->cpfLineEdit->clear();
+}
+
+void MainWindow::on_identifyUserButton_clicked(){
+    bool ok;
+    QString cpf = QInputDialog::getText(this, tr("Identificar Usuário:"),
+                                             tr("CPF:"), QLineEdit::Normal,"", &ok);
+    if (ok && !cpf.isEmpty()){
+        string userFullPath = util::getUser(cpf.toUtf8().constData());
+        if(userFullPath.length() == 0){
+            QString msg = "Usuário não encontrado no sistema! Por favor faça o cadastro";
+            this->alertMessage(msg);
+            return;
+        }
+
+        json j = util::readJson(userFullPath);
+        Person p(j);
+
+        int recognized = this->openVideoCapture(p.getFacePicturesPath(),true);
+
+        if(recognized >= 1){
+            QString msg = "Usuário reconhecido! Nome: "+QString::fromUtf8(p.getFirstName().c_str());
+            this->alertMessage(msg);
+        }else{
+            QString msg = "Usuário não reconhecido! Tente novamente, ou tire mais fotos da face.";
+            this->alertMessage(msg);
+        }
+
+    }
 }

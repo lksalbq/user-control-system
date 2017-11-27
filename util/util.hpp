@@ -20,4 +20,5 @@ namespace util{
    string createFacePicturesPath(string userType, string identifier);
    string getJsonFullPath(string pathName,string fileId);
    void removePngFormat(std::string &stringValue);
+   string getUser(string cpf);
 }

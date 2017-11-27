@@ -21,13 +21,13 @@
     <property name="geometry">
      <rect>
       <x>40</x>
-      <y>10</y>
+      <y>40</y>
       <width>1061</width>
       <height>581</height>
      </rect>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="tab">
      <attribute name="title">
@@ -36,15 +36,21 @@
      <widget class="QTableWidget" name="userTableWidget">
       <property name="geometry">
        <rect>
-        <x>40</x>
-        <y>40</y>
-        <width>891</width>
+        <x>150</x>
+        <y>50</y>
+        <width>711</width>
         <height>192</height>
        </rect>
       </property>
       <property name="layoutDirection">
        <enum>Qt::LeftToRight</enum>
       </property>
+      <property name="rowCount">
+       <number>0</number>
+      </property>
+      <attribute name="horizontalHeaderDefaultSectionSize">
+       <number>350</number>
+      </attribute>
       <column>
        <property name="text">
         <string>Nome</string>
@@ -55,17 +61,12 @@
         <string>CPF</string>
        </property>
       </column>
-      <column>
-       <property name="text">
-        <string>Deletar</string>
-       </property>
-      </column>
      </widget>
      <widget class="QCommandLinkButton" name="identifyUserButton">
       <property name="geometry">
        <rect>
-        <x>310</x>
-        <y>350</y>
+        <x>50</x>
+        <y>400</y>
         <width>291</width>
         <height>53</height>
        </rect>
