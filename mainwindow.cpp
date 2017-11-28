@@ -430,6 +430,8 @@ void MainWindow::addReserveToRoom(Reserve reserve){
 
     QString message = "Reserva realizada com sucesso!";
     this->alertMessage(message);
+     ui->reserveList->clear();
+     this->reserveListFill();
 }
 
 
@@ -470,7 +472,7 @@ void MainWindow::cleanReserveForm(){
 void MainWindow::reserveListFill(){
     Reserve r;
     vector<Reserve> reservations;
-    for(int i = 0; i < r.getNextId()-1;i++){
+    for(int i = 0; i < r.getNextId();i++){
        string p = util::getexepath()+"/json_db/reservations";
        if(boost::filesystem::is_directory(p) && !boost::filesystem::is_empty(p)){
            json j = util::readJson(p+"/"+to_string(i)+".json");
@@ -525,5 +527,38 @@ QString MainWindow::informUserRoom(QString cpf){
     }
 
     return roomNumberDestination;
+
+}
+
+void MainWindow::on_saveRoom_clicked(){
+    Room room;
+    string p = util::getexepath()+"/json_db/rooms";
+    string name;
+
+    if(ui->roomNumberRegisterLineEdit->text().isEmpty()){
+        QString msg = "Informe o nome da sala!";
+        this->alertMessage(msg);
+        return;
+    }
+    room.setRoomNumber(ui->roomNumberRegisterLineEdit->text().toUtf8().constData());
+    if (boost::filesystem::is_directory(p) && !boost::filesystem::is_empty(p)){
+        boost::filesystem::directory_iterator end_iter;
+
+        for (boost::filesystem::directory_iterator dir_itr(p);dir_itr != end_iter;++dir_itr){
+            name = dir_itr->path().filename().string();
+            util::removeJsonFormat(name);
+            if(room.getRoomNumber() == name){
+                QString msg = "Sala já cadastrada!";
+                this->alertMessage(msg);
+                return;
+            }
+        }
+        util::saveJson(room.getPathName(),room.getRoomNumber(),room.to_json());
+        QString msg = "Sala cadastrada com sucesso!";
+        this->alertMessage(msg);
+        ui->roomNumberRegisterLineEdit->clear();
+        ui->roomLineEdit->clear();
+        this->getRooms();
+    }
 
 }

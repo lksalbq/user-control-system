@@ -52,6 +52,7 @@ private slots:
 
     void on_cleanReserveForm_clicked();
 
+    void on_saveRoom_clicked();
 
 private:
     Ui::MainWindow *ui;
