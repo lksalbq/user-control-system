@@ -11,6 +11,8 @@
 #include <QInputDialog>
 #include <QStringData>
 #include <QStandardItem>
+#include <QListWidget>
+#include <QListWidgetItem>
 #include <string>
 #include <vector>
 #include <iostream>
@@ -296,6 +298,7 @@ void MainWindow::on_identifyUserButton_clicked(){
 
         if(recognized >= 1){
             QString msg = "Usuário reconhecido! Nome: "+QString::fromUtf8(p.getFirstName().c_str());
+            QString informative = " ads";
             this->alertMessage(msg);
         }else{
             QString msg = "Usuário não reconhecido! Tente novamente, ou tire mais fotos da face.";
@@ -305,17 +308,6 @@ void MainWindow::on_identifyUserButton_clicked(){
     }
 }
 
-void MainWindow::populateUserList(){
-    ui->userTableWidget->setAutoScroll(true);
-
-
-    for(int i=0;i<20;i++){
-        ui->userTableWidget->insertRow(ui->userTableWidget->rowCount());
-        QTableWidgetItem *firstRow = new QTableWidgetItem(QString("ColumnValue"));
-        ui->userTableWidget->setItem(i,i,firstRow);
-    }
-
-}
 
 void MainWindow::on_takeMorePictures_clicked(){
     bool ok;
@@ -473,4 +465,65 @@ void MainWindow::cleanReserveForm(){
     ui->recurrentCheckBox->setChecked(false);
     ui->autorLineEdit->clear();
     ui->reservePersons->clear();
+}
+
+void MainWindow::reserveListFill(){
+    Reserve r;
+    vector<Reserve> reservations;
+    for(int i = 0; i < r.getNextId()-1;i++){
+       string p = util::getexepath()+"/json_db/reservations";
+       if(boost::filesystem::is_directory(p) && !boost::filesystem::is_empty(p)){
+           json j = util::readJson(p+"/"+to_string(i)+".json");
+           Reserve r(j);
+           reservations.push_back(r);
+        }
+    }
+    if(reservations.size() > 0){
+        for(int j=0; j<reservations.size();j++){
+            ui->reserveList->addItem(QString::fromUtf8(to_string(reservations[j].getId()).c_str())+"-"
+                                     +QString::fromUtf8(reservations[j].getRoom().c_str())+"-"
+                                     +QString::fromUtf8(reservations[j].getInitSchedule().c_str()));
+        }
+    }else{
+        ui->reserveList->addItem("Nenhuma reserva efetuada!");
+    }
+
+}
+
+QString MainWindow::informUserRoom(QString cpf){
+    Reserve r;
+    vector<Reserve> reservations;
+    for(int i = 0; i < r.getNextId()-1;i++){
+       string p = util::getexepath()+"/json_db/reservations";
+       if(boost::filesystem::is_directory(p) && !boost::filesystem::is_empty(p)){
+           json j = util::readJson(p+"/"+to_string(i)+".json");
+           Reserve r(j);
+           reservations.push_back(r);
+        }
+    }
+    vector<Person> persons;
+    QString roomNumberDestination;
+    if(reservations.size() > 0){
+        for(int j=0; j<reservations.size();j++){
+            persons.push_back(reservations[j].getPersons());
+            for(int i=0;i < persons.size();i++){
+                if(QString::fromUtf8(persons[i].getCpf().c_str()) == cpf){
+                    cout<<persons[i].getCpf()<<endl;
+                    roomNumberDestination = QString::fromUtf8(reservations[j].getRoom().c_str());
+                    QDateTime dt = QDateTime::fromString(QString::fromUtf8(reservations[j].getInitSchedule().c_str()),"dd/MM/yyy HH:hh");
+                    if(dt <= dt.currentDateTime()){
+                       roomNumberDestination += " - No horario!";
+                    }
+                    break;
+                }
+            }
+            persons.clear();
+        }
+
+    }else{
+        roomNumberDestination = "Usuario sem sala reservada, encaminhe-o para o laboratorio aberto!";
+    }
+
+    return roomNumberDestination;
+
 }

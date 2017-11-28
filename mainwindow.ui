@@ -20,73 +20,44 @@
    <widget class="QTabWidget" name="tabReserveRegister">
     <property name="geometry">
      <rect>
-      <x>40</x>
+      <x>50</x>
       <y>40</y>
       <width>1061</width>
       <height>581</height>
      </rect>
     </property>
     <property name="currentIndex">
-     <number>3</number>
+     <number>2</number>
     </property>
     <widget class="QWidget" name="tab">
      <attribute name="title">
       <string>Acesso</string>
      </attribute>
-     <widget class="QTableWidget" name="userTableWidget">
+     <widget class="QCommandLinkButton" name="identifyUserButton">
       <property name="geometry">
        <rect>
-        <x>150</x>
-        <y>50</y>
-        <width>721</width>
-        <height>192</height>
+        <x>320</x>
+        <y>190</y>
+        <width>372</width>
+        <height>53</height>
        </rect>
       </property>
-      <property name="layoutDirection">
-       <enum>Qt::LeftToRight</enum>
+      <property name="text">
+       <string>Identificar Usuário</string>
       </property>
-      <property name="rowCount">
-       <number>0</number>
-      </property>
-      <attribute name="horizontalHeaderDefaultSectionSize">
-       <number>350</number>
-      </attribute>
-      <column>
-       <property name="text">
-        <string>Nome</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>CPF</string>
-       </property>
-      </column>
      </widget>
-     <widget class="QWidget" name="">
+     <widget class="QCommandLinkButton" name="takeMorePictures">
       <property name="geometry">
        <rect>
-        <x>140</x>
-        <y>350</y>
-        <width>751</width>
-        <height>55</height>
+        <x>310</x>
+        <y>330</y>
+        <width>381</width>
+        <height>53</height>
        </rect>
       </property>
-      <layout class="QGridLayout" name="gridLayout">
-       <item row="0" column="0">
-        <widget class="QCommandLinkButton" name="identifyUserButton">
-         <property name="text">
-          <string>Identificar Usuário</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1">
-        <widget class="QCommandLinkButton" name="takeMorePictures">
-         <property name="text">
-          <string>Tirar Mais Fotos do Usuário</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
+      <property name="text">
+       <string>Tirar Mais Fotos do Usuário</string>
+      </property>
      </widget>
     </widget>
     <widget class="QWidget" name="tab_2">
@@ -296,6 +267,29 @@ alternate-background-color: rgb(243, 243, 243);</string>
      <attribute name="title">
       <string>Reservas</string>
      </attribute>
+     <widget class="QListWidget" name="reserveList">
+      <property name="geometry">
+       <rect>
+        <x>50</x>
+        <y>100</y>
+        <width>981</width>
+        <height>401</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label">
+      <property name="geometry">
+       <rect>
+        <x>400</x>
+        <y>40</y>
+        <width>211</width>
+        <height>33</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Lista de Reservas</string>
+      </property>
+     </widget>
     </widget>
     <widget class="QWidget" name="tab_4">
      <attribute name="title">
@@ -469,7 +463,7 @@ alternate-background-color: rgb(243, 243, 243);</string>
      </widget>
      <widget class="QComboBox" name="reservePersons">
       <property name="enabled">
-       <bool>true</bool>
+       <bool>false</bool>
       </property>
       <property name="geometry">
        <rect>

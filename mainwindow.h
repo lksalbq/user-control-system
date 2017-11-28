@@ -2,6 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QListWidget>
+#include <QListWidgetItem>
 #include <string>
 #include <vector>
 #include <iostream>
@@ -29,8 +31,8 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-    void populateUserList();
     void getRooms();
+    void reserveListFill();
 private slots:
     void on_userTypeComboBox_activated(const QString &arg1);
 
@@ -50,6 +52,7 @@ private slots:
 
     void on_cleanReserveForm_clicked();
 
+
 private:
     Ui::MainWindow *ui;
     void alertMessage(QString message);
@@ -62,6 +65,7 @@ private:
     void saveReserve();
     void addReserveToRoom(Reserve reserve);
     void cleanReserveForm();
+    QString informUserRoom(QString cpf);
 
 };
 
