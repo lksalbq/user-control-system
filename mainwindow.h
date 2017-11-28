@@ -32,6 +32,7 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
     void getRooms();
+    void userListFill();
     void reserveListFill();
 private slots:
     void on_userTypeComboBox_activated(const QString &arg1);

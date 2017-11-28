@@ -298,7 +298,6 @@ void MainWindow::on_identifyUserButton_clicked(){
 
         if(recognized >= 1){
             QString msg = "Usuário reconhecido! Nome: "+QString::fromUtf8(p.getFirstName().c_str());
-            QString informative = " ads";
             this->alertMessage(msg);
         }else{
             QString msg = "Usuário não reconhecido! Tente novamente, ou tire mais fotos da face.";
@@ -491,6 +490,35 @@ void MainWindow::reserveListFill(){
     }
 
 }
+
+void MainWindow::userListFill(){
+
+    vector<Person> persons;
+
+    string p = util::getexepath()+"/json_db/Estudante/";
+        cout<<p;
+    if (boost::filesystem::is_directory(p) && !boost::filesystem::is_empty(p)){
+        boost::filesystem::directory_iterator end_iter;
+
+        for (boost::filesystem::directory_iterator dir_itr(p);dir_itr != end_iter;++dir_itr){
+            string name = dir_itr->path().filename().string();
+            json j = util::readJson(util::getexepath()+"/json_db/Estudante/"+name);
+            Person p(j);
+            persons.push_back(p);
+        }
+     }
+    if(persons.size() > 0){
+        for(int j=0; j<persons.size();j++){
+            ui->userList->addItem(QString::fromUtf8(persons[j].getCpf().c_str())+"-"
+                                     +QString::fromUtf8(persons[j].getFirstName().c_str())+"-"
+                                     +QString::fromUtf8(persons[j].getLastName().c_str()));
+        }
+    }else{
+        ui->userList->addItem("Nenhum usuario cadastrado!");
+    }
+
+}
+
 
 QString MainWindow::informUserRoom(QString cpf){
     Reserve r;
