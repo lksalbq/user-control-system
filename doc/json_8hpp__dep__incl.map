@@ -1,0 +1,26 @@
+<map id="config/json.hpp" name="config/json.hpp">
+<area shape="rect" id="node2" href="$util_8hpp.html" title="util/util.hpp" alt="" coords="547,229,632,256"/>
+<area shape="rect" id="node7" href="$main_8cpp.html" title="main.cpp" alt="" coords="1716,386,1791,413"/>
+<area shape="rect" id="node8" href="$mainwindow_8cpp.html" title="mainwindow.cpp" alt="" coords="1308,386,1426,413"/>
+<area shape="rect" id="node13" href="$person_8hpp.html" title="person/person.hpp" alt="" coords="1396,80,1525,107"/>
+<area shape="rect" id="node14" href="$student_8hpp.html" title="users/student.hpp" alt="" coords="1353,229,1480,256"/>
+<area shape="rect" id="node17" href="$professor_8hpp.html" title="users/professor.hpp" alt="" coords="1009,229,1146,256"/>
+<area shape="rect" id="node19" href="$employee_8hpp.html" title="users/employee.hpp" alt="" coords="2030,229,2168,256"/>
+<area shape="rect" id="node21" href="$employeetype_8hpp.html" title="users/employeetype.hpp" alt="" coords="1765,155,1929,181"/>
+<area shape="rect" id="node23" href="$reserve_8hpp.html" title="reserve/reserve.hpp" alt="" coords="1470,155,1608,181"/>
+<area shape="rect" id="node24" href="$room_8hpp.html" title="room/room.hpp" alt="" coords="1504,229,1614,256"/>
+<area shape="rect" id="node25" href="$discipline_8hpp.html" title="discipline/discipline.hpp" alt="" coords="1170,229,1329,256"/>
+<area shape="rect" id="node3" href="$camInterface_8cpp.html" title="cam&#45;interface/camInterface.cpp" alt="" coords="360,304,566,331"/>
+<area shape="rect" id="node4" href="$mainwindow_8h.html" title="mainwindow.h" alt="" coords="1842,304,1948,331"/>
+<area shape="rect" id="node9" href="$person_8cpp.html" title="person/person.cpp" alt="" coords="45,304,174,331"/>
+<area shape="rect" id="node10" href="$reserve_8cpp.html" title="reserve/reserve.cpp" alt="" coords="693,304,830,331"/>
+<area shape="rect" id="node11" href="$room_8cpp.html" title="room/room.cpp" alt="" coords="1404,304,1514,331"/>
+<area shape="rect" id="node12" href="$util_8cpp.html" title="util/util.cpp" alt="" coords="250,304,335,331"/>
+<area shape="rect" id="node5" href="$moc__mainwindow_8cpp.html" title="control&#45;system_autogen\l/EWIEGA46WW/moc_mainwindow.cpp" alt="" coords="1815,379,2068,420"/>
+<area shape="rect" id="node6" href="$mocs__compilation_8cpp.html" title="control&#45;system_autogen\l/mocs_compilation.cpp" alt="" coords="1861,468,2022,509"/>
+<area shape="rect" id="node15" href="$discipline_8cpp.html" title="discipline/discipline.cpp" alt="" coords="1170,304,1329,331"/>
+<area shape="rect" id="node16" href="$student_8cpp.html" title="users/student.cpp" alt="" coords="1538,304,1665,331"/>
+<area shape="rect" id="node18" href="$professor_8cpp.html" title="users/professor.cpp" alt="" coords="906,304,1044,331"/>
+<area shape="rect" id="node20" href="$employee_8cpp.html" title="users/employee.cpp" alt="" coords="2124,304,2263,331"/>
+<area shape="rect" id="node22" href="$employeetype_8cpp.html" title="users/employeetype.cpp" alt="" coords="1790,229,1954,256"/>
+</map>

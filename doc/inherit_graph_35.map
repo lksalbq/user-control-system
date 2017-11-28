@@ -1,0 +1,6 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$classPerson.html" title="Person" alt="" coords="5,56,68,83"/>
+<area shape="rect" id="node2" href="$classEmployee.html" title="Employee" alt="" coords="116,5,196,32"/>
+<area shape="rect" id="node3" href="$classProfessor.html" title="Professor" alt="" coords="117,56,195,83"/>
+<area shape="rect" id="node4" href="$classStudent.html" title="Student" alt="" coords="123,107,189,133"/>
+</map>

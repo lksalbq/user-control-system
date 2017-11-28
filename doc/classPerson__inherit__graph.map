@@ -1,0 +1,5 @@
+<map id="Person" name="Person">
+<area shape="rect" id="node2" href="$classEmployee.html" title="{Employee\n||+ Employee()\l+ Employee()\l+ Employee()\l+ setFunctionalRegistry()\l+ setEmployeeType()\l+ getFunctionalRegistry()\l+ getEmployeeType()\l+ getPathName()\l+ to_json()\l}" alt="" coords="5,395,175,589"/>
+<area shape="rect" id="node3" href="$classProfessor.html" title="{Professor\n||+ Professor()\l+ Professor()\l+ Professor()\l+ setFunctionalRegistry()\l+ setDisciplines()\l+ getFunctionalRegistry()\l+ getDisciplines()\l+ to_json()\l}" alt="" coords="199,402,368,582"/>
+<area shape="rect" id="node4" href="$classStudent.html" title="{Student\n||+ Student()\l+ Student()\l+ Student()\l+ setRegistry()\l+ setDisciplines()\l+ getRegistry()\l+ getDisciplines()\l+ to_json()\l+ getPathName()\l}" alt="" coords="392,395,516,589"/>
+</map>

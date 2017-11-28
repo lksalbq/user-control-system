@@ -14,4 +14,6 @@ control-system
 json_db/
 *.json
 *.pro
+/latex
+configdox
 control-system_autogen/

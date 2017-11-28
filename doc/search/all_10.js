@@ -1,0 +1,25 @@
+var searchData=
+[
+  ['parse',['parse',['../classnlohmann_1_1basic__json.html#a86f339e8449cce96b89e86635a7d389e',1,'nlohmann::basic_json::parse(T(&amp;array)[N], const parser_callback_t cb=nullptr)'],['../classnlohmann_1_1basic__json.html#ab275a3e00a40189e96d244de6c8f311a',1,'nlohmann::basic_json::parse(const CharT s, const parser_callback_t cb=nullptr)'],['../classnlohmann_1_1basic__json.html#a4cd30efe5c33a7cf73a0c6495bb16054',1,'nlohmann::basic_json::parse(std::istream &amp;i, const parser_callback_t cb=nullptr)'],['../classnlohmann_1_1basic__json.html#a3bd712a1351ba28e5440fac2359da1cb',1,'nlohmann::basic_json::parse(std::istream &amp;&amp;i, const parser_callback_t cb=nullptr)'],['../classnlohmann_1_1basic__json.html#a360d37260add46be89881db2366fe343',1,'nlohmann::basic_json::parse(IteratorType first, IteratorType last, const parser_callback_t cb=nullptr)'],['../classnlohmann_1_1basic__json.html#a00795fca3388571ba4a56a1ea6e0466b',1,'nlohmann::basic_json::parse(const ContiguousContainer &amp;c, const parser_callback_t cb=nullptr)']]],
+  ['parse_5fevent_5ft',['parse_event_t',['../classnlohmann_1_1basic__json.html#aea1c863b719b4ca5b77188c171bbfafe',1,'nlohmann::basic_json']]],
+  ['parser_5fcallback_5ft',['parser_callback_t',['../classnlohmann_1_1basic__json.html#aecae491e175f8767c550ae3c59e180e3',1,'nlohmann::basic_json']]],
+  ['patch',['patch',['../classnlohmann_1_1basic__json.html#a81e0c41a4a9dff4df2f6973f7f8b2a83',1,'nlohmann::basic_json']]],
+  ['person',['Person',['../classPerson.html',1,'Person'],['../classPerson.html#a0397c6f89fafc12e738923f612bc41a3',1,'Person::Person()'],['../classPerson.html#a0cbb7aa38af5399ba24ac758220813ee',1,'Person::Person(string name, string lastName, string facePicturesPath)'],['../classPerson.html#ae1ad20a3e85c30cfddd1144b395547a3',1,'Person::Person(json j)']]],
+  ['person_2ecpp',['person.cpp',['../person_8cpp.html',1,'']]],
+  ['person_2ehpp',['person.hpp',['../person_8hpp.html',1,'']]],
+  ['person_5fto_5fjson',['person_to_json',['../classPerson.html#a7e7fe6cdbbb92562550ab9358be345cd',1,'Person']]],
+  ['person_5fto_5fjson_5freserve',['person_to_json_reserve',['../classPerson.html#a24997311d1fbd73c53559592c85a6ae8',1,'Person']]],
+  ['personform',['personForm',['../classUi__MainWindow.html#a5f5f2f73644aeba2a34ba0bf79584951',1,'Ui_MainWindow']]],
+  ['persons',['persons',['../classReserve.html#a41faba684b8b1b4b2e3f85c98dd11ba3',1,'Reserve']]],
+  ['platform_5fid',['PLATFORM_ID',['../CMakeCCompilerId_8c.html#adbc5372f40838899018fadbc89bd588b',1,'PLATFORM_ID():&#160;CMakeCCompilerId.c'],['../CMakeCXXCompilerId_8cpp.html#adbc5372f40838899018fadbc89bd588b',1,'PLATFORM_ID():&#160;CMakeCXXCompilerId.cpp']]],
+  ['pointer',['pointer',['../classnlohmann_1_1basic__json.html#aefee1f777198c68724bd127e0c8abbe4',1,'nlohmann::basic_json::pointer()'],['../classnlohmann_1_1basic__json_1_1iter__impl.html#a3dddd7fa38b36e2531700ceb4a1ce9a8',1,'nlohmann::basic_json::iter_impl::pointer()']]],
+  ['priority_5ftag',['priority_tag',['../structnlohmann_1_1detail_1_1priority__tag.html',1,'nlohmann::detail']]],
+  ['priority_5ftag_3c_200_20_3e',['priority_tag&lt; 0 &gt;',['../structnlohmann_1_1detail_1_1priority__tag_3_010_01_4.html',1,'nlohmann::detail']]],
+  ['professor',['Professor',['../classProfessor.html',1,'Professor'],['../classProfessor.html#ac6d4e54caf399a841888e60b54eed4c3',1,'Professor::Professor()'],['../classProfessor.html#a879f390f191a855654db75a6724d4d62',1,'Professor::Professor(string functionalRegistry, vector&lt; string &gt;disciplines)'],['../classProfessor.html#a5945ae2638f63a1eac2d7ccefdff1552',1,'Professor::Professor(json j)']]],
+  ['professor_2ecpp',['professor.cpp',['../professor_8cpp.html',1,'']]],
+  ['professor_2ehpp',['professor.hpp',['../professor_8hpp.html',1,'']]],
+  ['propositolabel',['propositoLabel',['../classUi__MainWindow.html#a66d4dee08d995899e97adedced857215',1,'Ui_MainWindow']]],
+  ['purpose',['purpose',['../classReserve.html#a2a404eea354b3b5766c54824c85e6cba',1,'Reserve']]],
+  ['purposecombobox',['purposeComboBox',['../classUi__MainWindow.html#a051aa237f06d4d10475b45095b25e92c',1,'Ui_MainWindow']]],
+  ['push_5fback',['push_back',['../classnlohmann_1_1basic__json.html#ac8e523ddc8c2dd7e5d2daf0d49a9c0d7',1,'nlohmann::basic_json::push_back(basic_json &amp;&amp;val)'],['../classnlohmann_1_1basic__json.html#ab4384af330b79de0e5f279576803a2c7',1,'nlohmann::basic_json::push_back(const basic_json &amp;val)'],['../classnlohmann_1_1basic__json.html#ae11a3a51782c058fff2f6550cdfb9b3c',1,'nlohmann::basic_json::push_back(const typename object_t::value_type &amp;val)'],['../classnlohmann_1_1basic__json.html#ab2716cbe2e997ab8309926b87f044434',1,'nlohmann::basic_json::push_back(std::initializer_list&lt; basic_json &gt; init)']]]
+];

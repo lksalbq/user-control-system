@@ -1,4 +1,16 @@
 #include "mainwindow.h"
+#include "users/student.hpp"
+#include "users/professor.hpp"
+#include "users/employee.hpp"
+#include "discipline/discipline.hpp"
+#include "room/room.hpp"
+#include "cam-interface/camInterface.hpp"
+#include <string>
+#include <vector>
+#include <iostream>
+#include <fstream>
+#include "config/json.hpp"
+#include "util/util.hpp"
 #include <QApplication>
 
 int main(int argc, char *argv[])
