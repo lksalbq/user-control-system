@@ -36,6 +36,10 @@ json Room::getReservations(){
 	return j;
 }
 
+vector<Reserve> Room::getReservationsVec(){
+	return this->reservations;
+}
+
 void Room::setReservations(vector<Reserve> reservations){
 	this->reservations = reservations;	
 }

@@ -17,7 +17,7 @@
    <string notr="true"/>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QTabWidget" name="tabWidget">
+   <widget class="QTabWidget" name="tabReserveRegister">
     <property name="geometry">
      <rect>
       <x>40</x>
@@ -27,7 +27,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>3</number>
     </property>
     <widget class="QWidget" name="tab">
      <attribute name="title">
@@ -174,7 +174,7 @@ alternate-background-color: rgb(243, 243, 243);</string>
        <item row="6" column="0">
         <widget class="QLabel" name="registryLabel">
          <property name="text">
-          <string>Matrícula</string>
+          <string>Matrícula:</string>
          </property>
         </widget>
        </item>
@@ -188,7 +188,7 @@ alternate-background-color: rgb(243, 243, 243);</string>
        <item row="8" column="0">
         <widget class="QLabel" name="functionalRegistryLabel">
          <property name="text">
-          <string>Registro Funcional</string>
+          <string>Registro Funcional:</string>
          </property>
         </widget>
        </item>
@@ -202,7 +202,7 @@ alternate-background-color: rgb(243, 243, 243);</string>
        <item row="9" column="0">
         <widget class="QLabel" name="employeeTypeLabel">
          <property name="text">
-          <string>Tipo de Funcionário</string>
+          <string>Tipo de Funcionário:</string>
          </property>
         </widget>
        </item>
@@ -216,7 +216,7 @@ alternate-background-color: rgb(243, 243, 243);</string>
        <item row="10" column="0">
         <widget class="QLabel" name="companyLabel">
          <property name="text">
-          <string>Empresa</string>
+          <string>Empresa:</string>
          </property>
         </widget>
        </item>
@@ -301,6 +301,185 @@ alternate-background-color: rgb(243, 243, 243);</string>
      <attribute name="title">
       <string>Cadastrar Reservas</string>
      </attribute>
+     <widget class="QWidget" name="reserveForm" native="true">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>10</y>
+        <width>1011</width>
+        <height>311</height>
+       </rect>
+      </property>
+      <layout class="QFormLayout" name="formLayout_2">
+       <item row="1" column="0">
+        <widget class="QLabel" name="initScheduleLabel">
+         <property name="text">
+          <string>Início:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QDateTimeEdit" name="initScheduleLineEdit">
+         <property name="minimumSize">
+          <size>
+           <width>845</width>
+           <height>42</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="endScheduleLabel">
+         <property name="text">
+          <string>Fim:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QDateTimeEdit" name="endScheduleEdit"/>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="roomLabel">
+         <property name="text">
+          <string>Sala:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QComboBox" name="roomLineEdit"/>
+       </item>
+       <item row="4" column="0">
+        <widget class="QLabel" name="recorrenteLabel">
+         <property name="text">
+          <string>Recorrente:?</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1">
+        <widget class="QCheckBox" name="recurrentCheckBox">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
+         <property name="text">
+          <string>SIM</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="0">
+        <widget class="QLabel" name="autorLabel">
+         <property name="text">
+          <string>CPF Autor:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="1">
+        <widget class="QLineEdit" name="autorLineEdit">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="0">
+        <widget class="QLabel" name="propositoLabel">
+         <property name="text">
+          <string>Propósito:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="1">
+        <widget class="QComboBox" name="purposeComboBox">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
+         <item>
+          <property name="text">
+           <string/>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Aula</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Evento</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Limpeza</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Individual</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Reunião</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QCommandLinkButton" name="addPersonsToReserve">
+      <property name="geometry">
+       <rect>
+        <x>370</x>
+        <y>320</y>
+        <width>321</width>
+        <height>53</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Adicionar Participantes</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="saveReserve">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>570</x>
+        <y>480</y>
+        <width>141</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Salvar</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="cleanReserveForm">
+      <property name="geometry">
+       <rect>
+        <x>370</x>
+        <y>480</y>
+        <width>141</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Limpar</string>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="reservePersons">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>460</x>
+        <y>410</y>
+        <width>121</width>
+        <height>41</height>
+       </rect>
+      </property>
+     </widget>
     </widget>
    </widget>
   </widget>

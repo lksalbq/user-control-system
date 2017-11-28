@@ -36,6 +36,7 @@ public:
   Person getPerson();
 
   json person_to_json();
+  json person_to_json_reserve();
   void savePerson();
 };
 #endif

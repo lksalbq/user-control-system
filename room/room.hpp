@@ -26,6 +26,7 @@ public:
   void setRoomNumber(string roomNumber);
 
   json getReservations();
+  vector<Reserve> getReservationsVec();
   void setReservations(vector<Reserve> reservation);
   
   json to_json();

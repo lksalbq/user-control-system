@@ -17,14 +17,14 @@ protected:
   Person author;
   string purpose;
   string roomNumber;
-  time_t initSchedule;
-  time_t endSchedule;
+  string initSchedule;
+  string endSchedule;
   bool recurrent;
   vector<Person> persons;
 public:
   Reserve();
   Reserve(int id,Person author, string purpose,string roomNumber, 
-  time_t initSchedule, time_t endSchedule,bool recurrent,vector<Person> persons);
+  string initSchedule, string endSchedule,bool recurrent,vector<Person> persons);
   Reserve(json j);
 
   int getId();
@@ -39,11 +39,11 @@ public:
   string getRoom();
   void setRoom(string roomNumber);
 
-  void setInitSchedule(time_t initSchedule);
-  time_t getInitSchedule();
+  void setInitSchedule(string initSchedule);
+  string getInitSchedule();
   
-  void setEndSchedule(time_t endSchedule);
-  time_t getEndSchedule();
+  void setEndSchedule(string endSchedule);
+  string getEndSchedule();
 
   void setRecurrent(bool recurrent);
   bool getRecurrent();

@@ -20,6 +20,7 @@
 #include "users/professor.hpp"
 #include "users/employee.hpp"
 #include "users/employeetype.hpp"
+#include "room/room.hpp"
 #include "util/util.hpp"
 #include "cam-interface/camInterface.hpp"
 #include "config/json.hpp"
@@ -52,9 +53,9 @@ void MainWindow::on_userTypeComboBox_activated(const QString &arg1){
     ui->employeeTypeLineEdit->setEnabled(false);
     ui->companyComboBox->setEnabled(false);
 
-    if(ui->formLayout->rowCount() == 12){
-       ui->formLayout->removeRow(11);
-    }
+//    if(ui->formLayout->rowCount() == 12){
+//       ui->formLayout->removeRow(11);
+//    }
 
     if(arg1 == "Professor"){
         //do professor thing
@@ -220,6 +221,14 @@ void MainWindow::alertMessage(QString message){
     msgBox.exec();
 }
 
+void MainWindow::alertMessageInformative(QString message, QString informative){
+    QMessageBox msgBox;
+    msgBox.setWindowTitle("Alerta!");
+    msgBox.setText(message);
+    msgBox.setInformativeText(informative);
+    msgBox.setStandardButtons(QMessageBox::Ok);
+    msgBox.exec();
+}
 int MainWindow::openVideoCapture(string facePicturesPath, bool recognize){
 
     CamInterface cam;
@@ -328,4 +337,140 @@ void MainWindow::on_takeMorePictures_clicked(){
         QString msg = "Fotos adicionadas com sucesso!";
         this->alertMessage(msg);
     }
+}
+
+void MainWindow::getRooms(){
+    string p = util::getexepath()+"/json_db/rooms";
+    int i = 0;
+
+    for(int j = 0; j <ui->roomLineEdit->count();++j ){
+        ui->roomLineEdit->removeItem(j);
+    }
+
+    ui->reservePersons->setHidden(true);
+
+    //equalize schedule
+    ui->initScheduleLineEdit->setMinimumDateTime(QDateTime::currentDateTime());
+    ui->endScheduleEdit->setMinimumDateTime(ui->initScheduleLineEdit->dateTime().addSecs(3600));
+
+    //fill rooms combo box
+    if (boost::filesystem::is_directory(p)){
+        boost::filesystem::directory_iterator end_iter;
+        for (boost::filesystem::directory_iterator dir_itr(p);dir_itr != end_iter;++dir_itr){
+            i++;
+            string roomName = dir_itr->path().filename().string();
+            util::removeJsonFormat(roomName);
+            ui->roomLineEdit->addItem(QString::fromUtf8(roomName.c_str()));
+        }
+    }
+}
+
+void MainWindow::on_saveReserve_clicked(){
+
+    if(ui->initScheduleLineEdit->dateTime().toString().isEmpty()){
+        QString message = "O campo inicio é obrigatório";
+        this->alertMessage(message);
+        return;
+    }else if(ui->endScheduleEdit->dateTime().toString().isEmpty()){
+        QString message = "O campo fim é obrigatório";
+        this->alertMessage(message);
+        return;
+    }else if(ui->reservePersons->count() < 1){
+        QString message = "É necessário adicionar pelo menos uma pessoa!";
+        this->alertMessage(message);
+        return;
+    }else if(util::getUser(ui->autorLineEdit->text().toUtf8().constData()).length() == 0){
+        QString message = "Autor da reserva não cadastrado!";
+        QString informative = "Para fazer a reserva é necessário estar cadastrado!";
+        this->alertMessageInformative(message, informative);
+        return;
+    }else if(ui->purposeComboBox->currentText().isEmpty()){
+        QString message = "O campo propósito é obrigatório!";
+        this->alertMessage(message);
+        return;
+    }
+
+    saveReserve();
+
+}
+
+void MainWindow::saveReserve(){
+
+    Reserve r;
+
+    r.setId(r.getNextId());
+
+    r.setInitSchedule(ui->initScheduleLineEdit->dateTime().toString().toUtf8().constData());
+    r.setEndSchedule(ui->endScheduleEdit->dateTime().toString().toUtf8().constData());
+    r.setRoom(ui->roomLineEdit->currentText().toUtf8().constData());
+    r.setRecurrent(ui->recurrentCheckBox->isChecked());
+
+    string userPath = util::getUser(ui->autorLineEdit->text().toUtf8().constData());
+    json j = util::readJson(userPath);
+    Person author(j);
+    r.setAuthor(author);
+
+    r.setPurpose(ui->purposeComboBox->currentText().toUtf8().constData());
+    vector<Person> persons;
+
+    for(int i=0;i<ui->reservePersons->count();i++){
+        string userPath = util::getUser(ui->reservePersons->itemText(i).toUtf8().constData());
+        json j = util::readJson(userPath);
+        Person p(j);
+        persons.push_back(p);
+    }
+    r.setPersons(persons);
+    util::saveJson(r.getPathName(),to_string(r.getId()),r.to_json());
+
+    this->addReserveToRoom(r);
+
+}
+
+void MainWindow::addReserveToRoom(Reserve reserve){
+    //getting room
+    json j = util::readJson(util::getexepath()+"/json_db/rooms/"+reserve.getRoom()+".json");
+    Room room(j);
+    vector<Reserve> reservations = room.getReservationsVec();
+    reservations.push_back(reserve);
+    room.setReservations(reservations);
+    util::saveJson(room.getPathName(),room.getRoomNumber(),room.to_json());
+    cleanReserveForm();
+
+    QString message = "Reserva realizada com sucesso!";
+    this->alertMessage(message);
+}
+
+
+void MainWindow::on_addPersonsToReserve_clicked(){
+    bool ok;
+    QString cpf = QInputDialog::getText(this, tr("Identificar Usuário:"),
+                                             tr("CPF:"), QLineEdit::Normal,"", &ok);
+    if (ok && !cpf.isEmpty()){
+        string userFullPath = util::getUser(cpf.toUtf8().constData());
+        if(userFullPath.length() == 0){
+            QString msg = "Usuário não encontrado no sistema! Por favor faça o cadastro";
+            this->alertMessage(msg);
+            return;
+        }
+
+        json j = util::readJson(userFullPath);
+        Person p(j);
+
+        ui->reservePersons->addItem(QString::fromUtf8(p.getCpf().c_str()));
+
+        QString msg = "Usuário adicionado com sucesso!";
+        this->alertMessage(msg);
+    }
+}
+
+void MainWindow::on_cleanReserveForm_clicked(){
+    cleanReserveForm();
+}
+
+void MainWindow::cleanReserveForm(){
+    ui->initScheduleLineEdit->clear();
+    ui->endScheduleEdit->clear();
+    ui->recurrentCheckBox->setChecked(false);
+    ui->autorLineEdit->clear();
+    ui->reservePersons->clear();
 }

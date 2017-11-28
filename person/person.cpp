@@ -53,3 +53,10 @@ json Person::person_to_json() {
   j = json{{"firstName", this->getFirstName()}, {"lastName", this->getLastName()},{"cpf", this->getCpf()},{"facePicturesPath", this->getFacePicturesPath()}};
   return j;
 }
+
+
+json Person::person_to_json_reserve() {
+  json j;
+  j = json{{"person",this->person_to_json()}};
+  return j;
+}
