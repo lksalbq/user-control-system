@@ -19,7 +19,7 @@ int main(int argc, char *argv[])
     MainWindow w;
     w.getRooms();
     w.reserveListFill();
-    //w.userListFill();
+    w.userListFill();
     w.setWindowTitle("Sistem de Controle de Usuários");
     w.show();
 

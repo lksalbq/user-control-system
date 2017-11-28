@@ -17,6 +17,7 @@
 #include <vector>
 #include <iostream>
 #include <fstream>
+#include <boost/foreach.hpp>
 #include "person/person.hpp"
 #include "users/student.hpp"
 #include "users/professor.hpp"
@@ -28,6 +29,7 @@
 #include "config/json.hpp"
 #include "util/util.hpp"
 
+namespace fs = boost::filesystem;
 using namespace std;
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -495,23 +497,30 @@ void MainWindow::userListFill(){
 
     vector<Person> persons;
 
-    string p = util::getexepath()+"/json_db/Estudante/";
-        cout<<p;
+    string p = util::getexepath()+"/json_db/Estudante";
+
     if (boost::filesystem::is_directory(p) && !boost::filesystem::is_empty(p)){
         boost::filesystem::directory_iterator end_iter;
 
-        for (boost::filesystem::directory_iterator dir_itr(p);dir_itr != end_iter;++dir_itr){
-            string name = dir_itr->path().filename().string();
-            json j = util::readJson(util::getexepath()+"/json_db/Estudante/"+name);
-            Person p(j);
-            persons.push_back(p);
+        fs::directory_iterator it(p), eod;
+        BOOST_FOREACH(fs::path const &p, std::make_pair(it, eod)){
+            if(fs::is_regular_file(p)){
+                string name = p.filename().string();
+                json j = util::readJson(util::getexepath()+"/json_db/Estudante/"+name);
+                Person person(j);
+                persons.push_back(person);
+            }
         }
      }
+    QString cpf = "CPF: ";
+    QString name = "Nome: ";
+    QString lastName = "Sobrenome: ";
     if(persons.size() > 0){
         for(int j=0; j<persons.size();j++){
-            ui->userList->addItem(QString::fromUtf8(persons[j].getCpf().c_str())+"-"
-                                     +QString::fromUtf8(persons[j].getFirstName().c_str())+"-"
-                                     +QString::fromUtf8(persons[j].getLastName().c_str()));
+
+            ui->userList->addItem(cpf+QString::fromUtf8(persons[j].getCpf().c_str())+" - "
+                                     +name+QString::fromUtf8(persons[j].getFirstName().c_str())+" - "
+                                     +lastName+QString::fromUtf8(persons[j].getLastName().c_str()));
         }
     }else{
         ui->userList->addItem("Nenhum usuario cadastrado!");

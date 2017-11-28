@@ -70,7 +70,7 @@ $./control-system
 
 ## Identificação de Usuário
 
-![|identify user](https://gitlab.com/lksalbq/user-control-system/raw/master/sequence_diagram/identify_user.png)
+![| identify user](https://gitlab.com/lksalbq/user-control-system/raw/master/sequence_diagram/identify_user.png)
 
 
 
